@@ -1,52 +1,73 @@
-# Frontend Engineering Challenge, by Bloqit
+# React + TypeScript + Vite
 
-With the advent of Pokémon GO many fans got the opportunity to live and breathe their good old memories as Pokémon Trainers. They didn't merely want to relive the past, they sought to ascend to the pinnacle of Pokémon mastery, to become revered as true Pokémon Masters. 
-Yet, as they embarked on this journey from humble beginnings, a palpable void became evident — a missing link in their quest for excellence. With no centralized platform to track their progress, many felt adrift in their pursuit of greatness. It was this unmet need that sparked a quest for innovation, a quest to develop a platform that would serve as a guiding light on their path to Pokémon mastery.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-So, how can we help them?
+Currently, two official plugins are available:
 
-## The challenge
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-After having spoken with a couple of Trainers, we were able to gather the most anticipated use cases
+## React Compiler
 
-_As a Pokémon Trainer I want to_:
-  - See all Pokémons that can be caught with their respective names and pictures
-    - Which one of these were already caught by me
-  - See all Pokémons that I've caught and thus added to my Pokédex
-  - See the most important details of each Pokémon (caught and uncaught): 
-    - Height, Weight, Health (HP), Speed, Attack, Defense, Special Attack, Special Defense and its types
-    - When the Pokémon was first added to the Pokédex
-  - Share any Pokémon with my fellow trainer colleagues, especially the ones already caught
-  - Have access to my Pokédex with limited internet connectivy or none at all
-  - Have a quick overview of my progress within the Pokédex
-  - Manage my Pokédex according to my taste and needs:
-    - Filter and Sort Pokémons by Name, Height Types and Timestamp
-    - Remove one or multiple Pokémons at once
-    - Attach a free-text Note to each Pokémon
-  - Alternate between different view modes
-    - An analytical view (e.g table) is mandatory but surely it's not the best option when the only nearby device at my disposal is my phone
-  - Export all Pokémons from the Pokédex to CSV
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-Fortunately, a popular and free Pokémon API comes to rescue us with this endeavor: [PokéAPI](https://pokeapi.co/docs/v2)
+## Expanding the ESLint configuration
 
-## What will be analyzed
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-**Code cohesion, quality, clearness, and correctness**
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-We value clean code that works and that follows industry-wide standards. Be ready to bring your best programming skills to the table
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-**Test coverage**
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-The "that works" part in the topic above cannot be expressed with 100% certainty unless we have good test coverage. Feel free to include some while implementing your solution
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-**Codebase organization, modularization, and coupling**
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-In such a dynamic and fast-paced environment like ours, we always keep an eye out for scalability and also for eventual strategic swings and changes of priority in our product offerings. In a scenario like that, good modularization and low coupling are two critical aspects that allow us to move fast without breaking things
-
-**Engineering principles and practices**
-
-Sometimes it's good to know the theoretical principles behind certain practices, feel free to bring some of the patterns you may judge necessary when implementing the solution
-
-**Attention to detail**
-
-Achieving pixel perfection often comes at the cost of runtime performance and implementation. Adding more features can enhance the functionality of an application, but it also introduces complexity that may overwhelm users, especially those new to the platform. Striving for simplicity in design doesn't mean sacrificing functionality. It means prioritizing the most essential features to ensure a smooth, accessible and enjoyable user experience across various devices and network conditions
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```

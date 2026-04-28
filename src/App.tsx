@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Button from './components/atoms/Button'
 import Card from './components/molecules/Card'
+import TopBar, { type ViewMode } from './components/molecules/TopBar'
 import DefaultLayout from './components/templates/DefaultLayout'
 import { usePokemonList } from './hooks/usePokemonList'
 import { usePokedex } from './hooks/usePokedex'
@@ -10,6 +11,7 @@ const PAGE_SIZE = 10
 
 function App() {
   const [page, setPage] = useState(0)
+  const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const offset = page * PAGE_SIZE
   const { pokemon, loading, error, count } = usePokemonList(offset, PAGE_SIZE)
   const pokedex = usePokedex()
@@ -41,41 +43,22 @@ function App() {
     </div>
   )
 
-  if (loading) {
-    return (
-      <DefaultLayout
-        search={<input type="text" placeholder="Search..." />}
-        sidebar={<nav aria-label="Product filters">Sidebar content</nav>}
-        content={
-          <p role="status" className="text-gray-500 text-sm">
-            Loading Pokémon...
-          </p>
-        }
-        pagination={pagination}
-      />
-    )
-  }
+  const renderContent = () => {
+    if (loading)
+      return (
+        <p role="status" className="text-gray-500 text-sm">
+          Loading Pokémon...
+        </p>
+      )
+    if (error)
+      return (
+        <p role="alert" className="text-red-600 text-sm">
+          {error}
+        </p>
+      )
 
-  if (error) {
-    return (
-      <DefaultLayout
-        search={<input type="text" placeholder="Search..." />}
-        sidebar={<nav aria-label="Product filters">Sidebar content</nav>}
-        content={
-          <p role="alert" className="text-red-600 text-sm">
-            {error}
-          </p>
-        }
-        pagination={pagination}
-      />
-    )
-  }
-
-  return (
-    <DefaultLayout
-      search={<input type="text" placeholder="Search..." />}
-      sidebar={<nav aria-label="Product filters">Sidebar content</nav>}
-      content={
+    if (viewMode === 'grid') {
+      return (
         <ul className="flex flex-wrap gap-4" aria-label="Pokémon list">
           {pokemon.map((p) => (
             <li key={p.id}>
@@ -88,7 +71,23 @@ function App() {
             </li>
           ))}
         </ul>
+      )
+    }
+
+    return <p>table</p>
+  }
+
+  return (
+    <DefaultLayout
+      topBar={
+        <TopBar
+          onViewModeChange={setViewMode}
+          totalCount={count}
+          caughtCount={pokedex.caughtCount}
+        />
       }
+      sidebar={<nav aria-label="Product filters">Sidebar content</nav>}
+      content={renderContent()}
       pagination={pagination}
     />
   )

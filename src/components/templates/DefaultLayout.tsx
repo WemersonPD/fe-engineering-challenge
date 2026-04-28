@@ -1,15 +1,15 @@
 import type { ReactNode } from 'react'
 
 interface DefaultLayoutProps {
-  search?: ReactNode
+  topBar?: ReactNode
   sidebar?: ReactNode
   content?: ReactNode
   pagination?: ReactNode
 }
 
-function DefaultLayout({ search, sidebar, content, pagination }: DefaultLayoutProps) {
+function DefaultLayout({ topBar, sidebar, content, pagination }: DefaultLayoutProps) {
   return (
-    <div className="h-full flex flex-col bg-gray-50">
+    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:underline"
@@ -21,7 +21,7 @@ function DefaultLayout({ search, sidebar, content, pagination }: DefaultLayoutPr
         role="banner"
         className="w-full px-4 py-4 sm:px-6 lg:px-8 shrink-0 border-b border-gray-200"
       >
-        {search}
+        {topBar}
       </header>
 
       <div className="flex flex-col lg:flex-row flex-1 min-h-0 px-4 sm:px-6 lg:px-8">

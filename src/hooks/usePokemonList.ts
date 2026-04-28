@@ -20,8 +20,6 @@ export function usePokemonList(
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    let cancelled = false
-
     async function load() {
       setLoading(true)
       setError(null)
@@ -33,18 +31,15 @@ export function usePokemonList(
         )
 
         const results = await Promise.all(ids.map((id) => fetchPokemon(id)))
-        if (!cancelled) setPokemon(results)
+        setPokemon(results)
       } catch {
-        if (!cancelled) setError('Failed to load Pokémon. Please try again.')
+        setError('Failed to load Pokémon. Please try again.')
       } finally {
-        if (!cancelled) setLoading(false)
+        setLoading(false)
       }
     }
 
     load()
-    return () => {
-      cancelled = true
-    }
   }, [offset, limit])
 
   return { pokemon, loading, error, count: TOTAL }

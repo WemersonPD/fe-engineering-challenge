@@ -3,7 +3,7 @@ import type { Pokemon } from '../types/pokemon'
 
 const P = new Pokedex()
 
-const GEN1_COUNT = 151
+export const GEN1_COUNT = 151
 
 function stat(stats: Pokedex.StatElement[], name: string): number {
   return stats.find((s) => s.stat.name === name)?.base_stat ?? 0

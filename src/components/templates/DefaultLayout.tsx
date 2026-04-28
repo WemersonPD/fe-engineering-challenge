@@ -27,9 +27,9 @@ function DefaultLayout({ topBar, sidebar, content, pagination }: DefaultLayoutPr
       <div className="flex flex-col lg:flex-row flex-1 min-h-0 px-4 sm:px-6 lg:px-8">
         <aside
           aria-label="Filters"
-          className="w-full lg:w-64 shrink-0 py-6 lg:border-r border-gray-200"
+          className="w-full lg:w-64 shrink-0 py-6 lg:border-r border-gray-200 lg:overflow-y-auto"
         >
-          <nav aria-label="Product filters">{sidebar}</nav>
+          {sidebar}
         </aside>
 
         <div className="flex flex-col flex-1 min-h-0 lg:pl-8">

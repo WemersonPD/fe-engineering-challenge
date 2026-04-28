@@ -1,6 +1,7 @@
 const DB_NAME = 'pokedex'
-const DB_VERSION = 1
+const DB_VERSION = 2
 export const CAUGHT_STORE = 'caught'
+export const POKEMON_STORE = 'pokemon'
 
 let instance: Promise<IDBDatabase> | null = null
 
@@ -12,11 +13,16 @@ export function getIndexedDB(): Promise<IDBDatabase> {
       request.onupgradeneeded = (event) => {
         const db = (event.target as IDBOpenDBRequest).result
 
-        // Starting the CAUGHT_STORE if it doesn't exist
         if (!db.objectStoreNames.contains(CAUGHT_STORE)) {
           const store = db.createObjectStore(CAUGHT_STORE, { keyPath: 'id' })
           store.createIndex('name', 'name', { unique: true })
           store.createIndex('caughtAt', 'caughtAt', { unique: false })
+        }
+
+        if (!db.objectStoreNames.contains(POKEMON_STORE)) {
+          const store = db.createObjectStore(POKEMON_STORE, { keyPath: 'id' })
+          store.createIndex('name', 'name', { unique: true })
+          store.createIndex('types', 'types', { multiEntry: true })
         }
       }
 

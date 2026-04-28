@@ -1,18 +1,45 @@
+import { useState } from 'react'
+import Button from './components/atoms/Button'
 import Card from './components/molecules/Card'
 import DefaultLayout from './components/templates/DefaultLayout'
 import { usePokemonList } from './hooks/usePokemonList'
 import { usePokedex } from './hooks/usePokedex'
 import type { Pokemon } from './types/pokemon'
 
-const FIRST_TEN = Array.from({ length: 10 }, (_, i) => i + 1)
+const PAGE_SIZE = 10
 
 function App() {
-  const { pokemon, loading, error } = usePokemonList(FIRST_TEN)
+  const [page, setPage] = useState(0)
+  const offset = page * PAGE_SIZE
+  const { pokemon, loading, error, count } = usePokemonList(offset, PAGE_SIZE)
   const pokedex = usePokedex()
+  const totalPages = Math.ceil(count / PAGE_SIZE)
 
   function handleCatch(p: Pokemon) {
     pokedex.catch({ id: p.id, name: p.name })
   }
+
+  const pagination = (
+    <div className="flex items-center justify-center gap-4">
+      <Button
+        variant="gray"
+        onClick={() => setPage((p) => p - 1)}
+        disabled={page === 0}
+      >
+        Previous
+      </Button>
+      <span className="text-sm text-gray-600">
+        Page {page + 1} of {totalPages}
+      </span>
+      <Button
+        variant="gray"
+        onClick={() => setPage((p) => p + 1)}
+        disabled={page >= totalPages - 1}
+      >
+        Next
+      </Button>
+    </div>
+  )
 
   if (loading) {
     return (
@@ -24,6 +51,7 @@ function App() {
             Loading Pokémon...
           </p>
         }
+        pagination={pagination}
       />
     )
   }
@@ -38,6 +66,7 @@ function App() {
             {error}
           </p>
         }
+        pagination={pagination}
       />
     )
   }
@@ -60,6 +89,7 @@ function App() {
           ))}
         </ul>
       }
+      pagination={pagination}
     />
   )
 }

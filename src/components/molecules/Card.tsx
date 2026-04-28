@@ -1,4 +1,5 @@
 import type { CaughtPokemon, Pokemon } from '../../types/pokemon'
+import Button from '../atoms/Button'
 import Text from '../atoms/Text'
 
 const COLOR_GRADIENT: Record<string, string> = {
@@ -147,18 +148,14 @@ export default function Card({
 
       {/* Catch / Release */}
       <div className="px-3 py-3">
-        <button
-          type="button"
+        <Button
+          variant={isCaught ? 'red' : 'green'}
           onClick={() => (isCaught ? onRelease(pokemon.id) : onCatch(pokemon))}
           aria-pressed={isCaught}
-          className={`w-full py-1.5 rounded-xl text-sm font-medium transition-colors ${
-            isCaught
-              ? 'bg-red-100 text-red-600 hover:bg-red-200'
-              : 'bg-green-100 text-green-700 hover:bg-green-200'
-          }`}
+          className="w-full"
         >
           {isCaught ? 'Release' : 'Catch'}
-        </button>
+        </Button>
       </div>
     </article>
   )

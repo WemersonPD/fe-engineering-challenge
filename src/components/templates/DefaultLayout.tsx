@@ -4,11 +4,12 @@ interface DefaultLayoutProps {
   search?: ReactNode
   sidebar?: ReactNode
   content?: ReactNode
+  pagination?: ReactNode
 }
 
-function DefaultLayout({ search, sidebar, content }: DefaultLayoutProps) {
+function DefaultLayout({ search, sidebar, content, pagination }: DefaultLayoutProps) {
   return (
-    <div className="min-h-screen lg:h-screen flex flex-col bg-gray-50">
+    <div className="h-full flex flex-col bg-gray-50">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:underline"
@@ -18,24 +19,30 @@ function DefaultLayout({ search, sidebar, content }: DefaultLayoutProps) {
 
       <header
         role="banner"
-        className="w-full px-4 py-4 sm:px-6 lg:px-8 shrink-0"
+        className="w-full px-4 py-4 sm:px-6 lg:px-8 shrink-0 border-b border-gray-200"
       >
         {search}
       </header>
 
-      <div className="flex flex-col lg:flex-row gap-6 px-4 sm:px-6 lg:px-8 pb-8 min-h-0 flex-1">
+      <div className="flex flex-col lg:flex-row flex-1 min-h-0 px-4 sm:px-6 lg:px-8">
         <aside
           aria-label="Filters"
-          className="w-full lg:w-64 shrink-0 flex flex-col"
+          className="w-full lg:w-64 shrink-0 py-6 lg:border-r border-gray-200"
         >
-          <nav aria-label="Product filters" className="flex flex-col flex-1">
-            {sidebar}
-          </nav>
+          <nav aria-label="Product filters">{sidebar}</nav>
         </aside>
 
-        <main id="main-content" className="flex-1 min-w-0 lg:overflow-y-auto">
-          {content}
-        </main>
+        <div className="flex flex-col flex-1 min-h-0 lg:pl-8">
+          <main id="main-content" className="flex-1 min-h-0 overflow-y-auto py-6">
+            {content}
+          </main>
+
+          {pagination && (
+            <div className="shrink-0 py-4 border-t border-gray-200">
+              {pagination}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

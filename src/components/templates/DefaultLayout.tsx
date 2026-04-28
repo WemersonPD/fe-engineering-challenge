@@ -9,7 +9,7 @@ interface DefaultLayoutProps {
 
 function DefaultLayout({ topBar, sidebar, content, pagination }: DefaultLayoutProps) {
   return (
-    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+    <div className="relative h-screen flex flex-col bg-gray-50 overflow-hidden">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:underline"

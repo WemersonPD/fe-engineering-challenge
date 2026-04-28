@@ -1,4 +1,4 @@
-import { ElementType, ComponentPropsWithoutRef } from 'react'
+import type { ElementType, ComponentPropsWithoutRef } from 'react'
 
 const variantClasses = {
   sm: 'font-semibold text-xs leading-4',
@@ -24,6 +24,7 @@ export default function Text<T extends ElementType = 'span'>({
   ...rest
 }: TextProps<T>) {
   const Tag = (tag ?? 'span') as ElementType
+
   return (
     <Tag
       className={[variantClasses[variant], className].filter(Boolean).join(' ')}

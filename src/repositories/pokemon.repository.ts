@@ -2,7 +2,7 @@ import type { CaughtPokemon } from '../types/pokemon'
 import { getIndexedDB, tx, wrap, CAUGHT_STORE } from '../apis/indexedDB'
 
 export async function catchPokemon(
-  pokemon: Omit<CaughtPokemon, 'caughtAt' | 'note'>
+  pokemon: Omit<CaughtPokemon, 'caughtAt' | 'note'>,
 ): Promise<void> {
   const db = await getIndexedDB()
   const entry: CaughtPokemon = {
@@ -38,9 +38,13 @@ export async function getAllCaught(): Promise<CaughtPokemon[]> {
   return wrap<CaughtPokemon[]>(tx(db, CAUGHT_STORE, 'readonly').getAll())
 }
 
-export async function getCaughtPokemon(id: number): Promise<CaughtPokemon | undefined> {
+export async function getCaughtPokemon(
+  id: number,
+): Promise<CaughtPokemon | undefined> {
   const db = await getIndexedDB()
-  return wrap<CaughtPokemon | undefined>(tx(db, CAUGHT_STORE, 'readonly').get(id))
+  return wrap<CaughtPokemon | undefined>(
+    tx(db, CAUGHT_STORE, 'readonly').get(id),
+  )
 }
 
 export async function getCaughtCount(): Promise<number> {

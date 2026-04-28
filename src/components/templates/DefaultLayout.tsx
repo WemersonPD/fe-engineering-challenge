@@ -16,12 +16,18 @@ function DefaultLayout({ search, sidebar, content }: DefaultLayoutProps) {
         Skip to main content
       </a>
 
-      <header role="banner" className="w-full px-4 py-4 sm:px-6 lg:px-8 shrink-0">
+      <header
+        role="banner"
+        className="w-full px-4 py-4 sm:px-6 lg:px-8 shrink-0"
+      >
         {search}
       </header>
 
       <div className="flex flex-col lg:flex-row gap-6 px-4 sm:px-6 lg:px-8 pb-8 min-h-0 flex-1">
-        <aside aria-label="Filters" className="w-full lg:w-64 shrink-0 flex flex-col">
+        <aside
+          aria-label="Filters"
+          className="w-full lg:w-64 shrink-0 flex flex-col"
+        >
           <nav aria-label="Product filters" className="flex flex-col flex-1">
             {sidebar}
           </nav>

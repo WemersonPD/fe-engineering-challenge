@@ -30,7 +30,11 @@ export function getIndexedDB(): Promise<IDBDatabase> {
   return instance
 }
 
-export function tx(db: IDBDatabase, store: string, mode: IDBTransactionMode): IDBObjectStore {
+export function tx(
+  db: IDBDatabase,
+  store: string,
+  mode: IDBTransactionMode,
+): IDBObjectStore {
   return db.transaction(store, mode).objectStore(store)
 }
 

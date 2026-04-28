@@ -37,7 +37,7 @@ export function usePokedex(): UsePokedexReturn {
       }
       setCaught((prev) => new Map(prev).set(pokemon.id, entry))
     },
-    []
+    [],
   )
 
   const release = useCallback(async (id: number) => {
@@ -67,10 +67,7 @@ export function usePokedex(): UsePokedexReturn {
     })
   }, [])
 
-  const isCaught = useCallback(
-    (id: number) => caught.has(id),
-    [caught]
-  )
+  const isCaught = useCallback((id: number) => caught.has(id), [caught])
 
   return {
     caught,

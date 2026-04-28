@@ -9,7 +9,9 @@ function stat(stats: Pokedex.StatElement[], name: string): number {
   return stats.find((s) => s.stat.name === name)?.base_stat ?? 0
 }
 
-export async function fetchPokemon(nameOrId: string | number): Promise<Pokemon> {
+export async function fetchPokemon(
+  nameOrId: string | number,
+): Promise<Pokemon> {
   const [pokemon, species] = await Promise.all([
     P.getPokemonByName(nameOrId as string),
     P.getPokemonSpeciesByName(nameOrId as string),

@@ -1,6 +1,7 @@
 import type { CaughtPokemon, Pokemon } from '../../types/pokemon'
 import Button from '../atoms/Button'
 import Text from '../atoms/Text'
+import Badge from '../atoms/Badge'
 
 const COLOR_GRADIENT: Record<string, string> = {
   black: 'from-gray-200',
@@ -128,18 +129,12 @@ export default function Card({
         </Text>
       </div>
 
-      {/* Divider + primary type row */}
+      {/* Divider + types row */}
       <div className="border-t border-gray-200 mx-3" />
       <div className="flex items-center justify-between px-4 py-3">
-        <span
-          aria-hidden="true"
-          className="w-7 h-7 rounded-full bg-gray-900 flex items-center justify-center text-white text-xs font-bold"
-        >
-          {primaryType.charAt(0).toUpperCase()}
-        </span>
-        <Text tag="span" variant="lg" className="text-gray-900 capitalize">
-          {primaryType}
-        </Text>
+        <div className="flex flex-wrap gap-1">
+          {pokemon.types.map((t) => <Badge key={t} type={t} />)}
+        </div>
         <Text tag="span" variant="base" className="text-gray-800">
           {pokemon.attack}
         </Text>

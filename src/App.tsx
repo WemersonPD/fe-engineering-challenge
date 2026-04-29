@@ -1,47 +1,49 @@
-import { useState } from 'react'
-import Button from './components/atoms/Button'
+import { useState, useEffect } from 'react'
 import Card from './components/molecules/Card'
+import FilterPanel, { type Filters } from './components/molecules/FilterPanel'
+import Pagination from './components/molecules/Pagination'
 import TopBar, { type ViewMode } from './components/molecules/TopBar'
 import DefaultLayout from './components/templates/DefaultLayout'
-import { usePokemonList } from './hooks/usePokemonList'
+import { useAllPokemon } from './hooks/useAllPokemon'
+import { useDebounce } from './hooks/useDebounce'
 import { usePokedex } from './hooks/usePokedex'
 import type { Pokemon } from './types/pokemon'
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 8
 
-function App() {
+const DEFAULT_FILTERS: Filters = {
+  name: '',
+  types: [],
+  minHeight: 0,
+  maxHeight: 20,
+  caughtOnly: false,
+  caughtAfter: '',
+  caughtBefore: '',
+}
+
+export default function App() {
   const [page, setPage] = useState(0)
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
-  const offset = page * PAGE_SIZE
-  const { pokemon, loading, error, count } = usePokemonList(offset, PAGE_SIZE)
-  const pokedex = usePokedex()
-  const totalPages = Math.ceil(count / PAGE_SIZE)
+  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS)
 
-  function handleCatch(p: Pokemon) {
+  const pokedex = usePokedex()
+  const debouncedFilters = useDebounce(filters)
+  const { pokemon, loading, error } = useAllPokemon(debouncedFilters, pokedex.caught)
+
+  useEffect(() => {
+    const setInitialPage = () => {
+      setPage(0)
+    }
+
+    setInitialPage()
+  }, [filters])
+
+  const totalPages = Math.ceil(pokemon.length / PAGE_SIZE)
+  const paginated = pokemon.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+
+  const handleCatch = (p: Pokemon) => {
     pokedex.catch({ id: p.id, name: p.name })
   }
-
-  const pagination = (
-    <div className="flex items-center justify-center gap-4">
-      <Button
-        variant="gray"
-        onClick={() => setPage((p) => p - 1)}
-        disabled={page === 0}
-      >
-        Previous
-      </Button>
-      <span className="text-sm text-gray-600">
-        Page {page + 1} of {totalPages}
-      </span>
-      <Button
-        variant="gray"
-        onClick={() => setPage((p) => p + 1)}
-        disabled={page >= totalPages - 1}
-      >
-        Next
-      </Button>
-    </div>
-  )
 
   const renderContent = () => {
     if (loading)
@@ -50,6 +52,7 @@ function App() {
           Loading Pokémon...
         </p>
       )
+
     if (error)
       return (
         <p role="alert" className="text-red-600 text-sm">
@@ -60,7 +63,7 @@ function App() {
     if (viewMode === 'grid') {
       return (
         <ul className="flex flex-wrap gap-4" aria-label="Pokémon list">
-          {pokemon.map((p) => (
+          {paginated.map((p) => (
             <li key={p.id}>
               <Card
                 pokemon={p}
@@ -82,15 +85,25 @@ function App() {
       topBar={
         <TopBar
           onViewModeChange={setViewMode}
-          totalCount={count}
+          totalCount={pokemon.length}
           caughtCount={pokedex.caughtCount}
         />
       }
-      sidebar={<nav aria-label="Product filters">Sidebar content</nav>}
+      sidebar={
+        <FilterPanel
+          filters={filters}
+          onChange={setFilters}
+          onClear={() => setFilters(DEFAULT_FILTERS)}
+        />
+      }
       content={renderContent()}
-      pagination={pagination}
+      pagination={
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
+      }
     />
   )
 }
-
-export default App

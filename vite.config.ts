@@ -5,4 +5,9 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), nodePolyfills()],
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+    globals: true,
+  },
 })

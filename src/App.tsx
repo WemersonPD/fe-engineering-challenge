@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Card from './components/molecules/Card'
-import FilterPanel, { type Filters } from './components/molecules/FilterPanel'
+import FilterPanel, { type Filters } from './components/organisms/FilterPanel'
 import Pagination from './components/molecules/Pagination'
 import TopBar, { type ViewMode } from './components/molecules/TopBar'
 import DefaultLayout from './components/templates/DefaultLayout'
@@ -28,7 +28,10 @@ export default function App() {
 
   const pokedex = usePokedex()
   const debouncedFilters = useDebounce(filters)
-  const { pokemon, loading, error } = useAllPokemon(debouncedFilters, pokedex.caught)
+  const { pokemon, loading, error } = useAllPokemon(
+    debouncedFilters,
+    pokedex.caught,
+  )
 
   useEffect(() => {
     const setInitialPage = () => {

@@ -1,15 +1,20 @@
 import Table, { type Column } from '../../molecules/Table'
 import Badge from '../../atoms/Badge'
+import Button from '../../atoms/Button'
 import type { Pokemon } from '../../../types/pokemon'
 import type { ViewProps } from './types'
 
-const COLUMNS: Column<Pokemon>[] = [
+const STATIC_COLUMNS: Column<Pokemon>[] = [
   {
     key: 'id',
     header: '#',
     render: (_, row) => (
       <div className="flex items-center gap-2">
-        <img src={row.image} alt={row.name} className="w-8 h-8 object-contain" />
+        <img
+          src={row.image}
+          alt={row.name}
+          className="w-8 h-8 object-contain"
+        />
         <span className="text-gray-400 text-xs">
           {String(row.id).padStart(4, '0')}
         </span>
@@ -36,21 +41,44 @@ const COLUMNS: Column<Pokemon>[] = [
     header: 'Types',
     render: (v) => (
       <div className="flex flex-wrap gap-1">
-        {(v as string[]).map((t) => <Badge key={t} type={t} />)}
+        {(v as string[]).map((t) => (
+          <Badge key={t} type={t} />
+        ))}
       </div>
     ),
   },
 ]
 
-export default function TableView({ pokemon, caught }: ViewProps) {
+export default function TableView({
+  pokemon,
+  caught,
+  onCatch,
+  onRelease,
+}: ViewProps) {
   const columns: Column<Pokemon>[] = [
-    ...COLUMNS,
+    ...STATIC_COLUMNS,
     {
       key: 'image',
       header: 'Added to Pokédex',
       render: (_, row) => {
         const entry = caught.get(row.id)
         return entry ? new Date(entry.caughtAt).toLocaleDateString() : '—'
+      },
+    },
+    {
+      key: 'weight',
+      header: 'Actions',
+      render: (_, row) => {
+        const isCaught = caught.has(row.id)
+        return isCaught ? (
+          <Button variant="red" onClick={() => onRelease(row.id)}>
+            Release
+          </Button>
+        ) : (
+          <Button variant="green" onClick={() => onCatch(row)}>
+            Catch
+          </Button>
+        )
       },
     },
   ]

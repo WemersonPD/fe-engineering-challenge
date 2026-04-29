@@ -33,7 +33,7 @@ function DefaultLayout({ topBar, sidebar, content, pagination }: DefaultLayoutPr
         </aside>
 
         <div className="flex flex-col flex-1 min-h-0 lg:pl-8">
-          <main id="main-content" className="flex-1 min-h-0 overflow-y-auto py-6">
+          <main id="main-content" className="flex-1 min-h-0 overflow-hidden py-6 flex flex-col">
             {content}
           </main>
 

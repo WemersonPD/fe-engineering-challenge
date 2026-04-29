@@ -21,7 +21,7 @@ export default function Table<T extends { id: number }>({
   return (
     <div
       className={cn(
-        'w-full overflow-x-auto rounded-xl border border-gray-200',
+        'flex-1 min-h-0 overflow-auto rounded-xl border border-gray-200',
         className,
       )}
     >
@@ -29,7 +29,7 @@ export default function Table<T extends { id: number }>({
         <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
           <tr>
             {columns.map((col) => (
-              <th key={String(col.key)} className="px-4 py-3 font-medium">
+              <th key={String(col.key)} className="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium">
                 {col.header}
               </th>
             ))}

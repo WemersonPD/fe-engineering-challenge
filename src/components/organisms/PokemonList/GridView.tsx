@@ -21,7 +21,7 @@ export default function GridView({
   onRelease,
 }: ViewProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <Dropdown
           options={SORT_OPTIONS}

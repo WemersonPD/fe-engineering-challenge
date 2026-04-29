@@ -5,7 +5,7 @@ import {
   getAllCachedPokemon,
   isCachePopulated,
 } from '../repositories/pokemon.repository'
-import type { Filters } from '../types/filters'
+import type { Filters, Sort } from '../types/filters'
 import type { CaughtPokemon, Pokemon } from '../types/pokemon'
 
 function matchesName(p: Pokemon, name: string): boolean {
@@ -45,8 +45,36 @@ function matchesCaught(
   return true
 }
 
+function sortPokemon(
+  list: Pokemon[],
+  caught: Map<number, CaughtPokemon>,
+  sort: Sort,
+): Pokemon[] {
+  const sorted = [...list].sort((a, b) => {
+    switch (sort.field) {
+      case 'id':
+        return a.id - b.id
+      case 'name':
+        return a.name.localeCompare(b.name)
+      case 'height':
+        return a.height - b.height
+      case 'types':
+        return (a.types[0] ?? '').localeCompare(b.types[0] ?? '')
+      case 'timestamp': {
+        const ta = caught.get(a.id)?.caughtAt ?? ''
+        const tb = caught.get(b.id)?.caughtAt ?? ''
+
+        return ta.localeCompare(tb)
+      }
+    }
+  })
+
+  return sort.order === 'desc' ? sorted.reverse() : sorted
+}
+
 export function useAllPokemon(
   filters: Filters,
+  sort: Sort,
   caught: Map<number, CaughtPokemon>,
 ) {
   const [allPokemon, setAllPokemon] = useState<Pokemon[]>([])
@@ -79,14 +107,15 @@ export function useAllPokemon(
   }, [])
 
   const pokemon = useMemo(() => {
-    return allPokemon.filter(
+    const filtered = allPokemon.filter(
       (p) =>
         matchesName(p, filters.name) &&
         matchesTypes(p, filters.types) &&
         matchesHeight(p, filters.minHeight, filters.maxHeight) &&
         matchesCaught(p, caught, filters),
     )
-  }, [allPokemon, filters, caught])
+    return sortPokemon(filtered, caught, sort)
+  }, [allPokemon, filters, sort, caught])
 
   return { pokemon, loading, error }
 }

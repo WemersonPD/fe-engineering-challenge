@@ -17,7 +17,7 @@ export default function Input({ label, id, className, wrapperClassName, ...rest 
       <input
         id={id}
         className={cn(
-          'border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300',
+          'border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500',
           className,
         )}
         {...rest}

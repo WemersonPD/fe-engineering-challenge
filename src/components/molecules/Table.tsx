@@ -1,21 +1,36 @@
 import { type ReactNode } from 'react'
+import {
+  ChevronUpIcon,
+  ChevronDownIcon,
+  ChevronUpDownIcon,
+} from '@heroicons/react/24/outline'
 import { cn } from '../../utils/cn'
 
 export interface Column<T> {
-  key: keyof T
+  key: string
   header: string
-  render?: (value: T[keyof T], row: T) => ReactNode
+  sortKey?: string
+  render?: (value: unknown, row: T) => ReactNode
+}
+
+interface Sort {
+  field: string
+  order: 'asc' | 'desc'
 }
 
 interface TableProps<T> {
   columns: Column<T>[]
   data: T[]
+  sort?: Sort
+  onSort?: (sortKey: string) => void
   className?: string
 }
 
 export default function Table<T extends { id: number }>({
   columns,
   data,
+  sort,
+  onSort,
   className,
 }: TableProps<T>) {
   return (
@@ -28,11 +43,37 @@ export default function Table<T extends { id: number }>({
       <table className="w-full text-sm text-left">
         <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
           <tr>
-            {columns.map((col) => (
-              <th key={String(col.key)} className="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium">
-                {col.header}
-              </th>
-            ))}
+            {columns.map((col) => {
+              const isSortable = !!col.sortKey && !!onSort
+              const isActive = sort?.field === col.sortKey
+              const isAsc = isActive && sort?.order === 'asc'
+
+              return (
+                <th
+                  key={col.key}
+                  className={cn(
+                    'sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap',
+                    isSortable &&
+                      'cursor-pointer select-none hover:text-gray-700',
+                  )}
+                  onClick={isSortable ? () => onSort!(col.sortKey!) : undefined}
+                >
+                  <div className="flex items-center gap-1">
+                    {col.header}
+                    {isSortable &&
+                      (isActive ? (
+                        isAsc ? (
+                          <ChevronUpIcon className="size-3 text-gray-700" />
+                        ) : (
+                          <ChevronDownIcon className="size-3 text-gray-700" />
+                        )
+                      ) : (
+                        <ChevronUpDownIcon className="size-3 text-gray-300" />
+                      ))}
+                  </div>
+                </th>
+              )
+            })}
           </tr>
         </thead>
 
@@ -40,15 +81,16 @@ export default function Table<T extends { id: number }>({
           {data.map((row) => (
             <tr
               key={row.id}
-              className="bg-white hover:bg-gray-50 transition-colors"
+              className="h-18 bg-white hover:bg-gray-50 transition-colors"
             >
-              {columns.map((col) => (
-                <td key={String(col.key)} className="px-4 py-3 text-gray-700">
-                  {col.render
-                    ? col.render(row[col.key], row)
-                    : String(row[col.key])}
-                </td>
-              ))}
+              {columns.map((col) => {
+                const value = (row as Record<string, unknown>)[col.key]
+                return (
+                  <td key={col.key} className="px-4 py-3 text-gray-700">
+                    {col.render ? col.render(value, row) : String(value ?? '')}
+                  </td>
+                )
+              })}
             </tr>
           ))}
         </tbody>

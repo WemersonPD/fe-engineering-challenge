@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Checkbox > matches snapshot 1`] = `
+<div>
+  <label
+    class="flex items-center gap-2 cursor-pointer"
+    for="fire"
+  >
+    <input
+      class="accent-gray-600"
+      id="fire"
+      type="checkbox"
+    />
+    <span
+      class="text-sm text-gray-600"
+    >
+      fire
+    </span>
+  </label>
+</div>
+`;

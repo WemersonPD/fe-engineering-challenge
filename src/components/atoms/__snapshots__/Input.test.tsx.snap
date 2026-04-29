@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Input > matches snapshot 1`] = `
+<div>
+  <div
+    class="flex flex-col gap-1.5"
+  >
+    <label
+      class="text-sm font-medium text-gray-600"
+      for="name"
+    >
+      Name
+    </label>
+    <input
+      class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+      id="name"
+      placeholder="Search..."
+      value=""
+    />
+  </div>
+</div>
+`;

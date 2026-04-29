@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Button > matches snapshot 1`] = `
+<div>
+  <button
+    class="py-1.5 px-4 rounded-xl text-sm font-medium transition-colors cursor-pointer bg-green-100 text-green-700 hover:bg-green-200"
+    type="button"
+  >
+    Catch
+  </button>
+</div>
+`;

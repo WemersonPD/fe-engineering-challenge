@@ -1,0 +1,297 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Table > matches snapshot 1`] = `
+<div>
+  <div
+    class="flex-1 min-h-0 overflow-auto rounded-xl border border-gray-200"
+  >
+    <table
+      class="w-full text-sm text-left"
+    >
+      <thead
+        class="bg-gray-50 text-gray-500 uppercase text-xs"
+      >
+        <tr>
+          <th
+            class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap"
+          >
+            <div
+              class="flex items-center gap-1"
+            >
+              #
+            </div>
+          </th>
+          <th
+            class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap"
+          >
+            <div
+              class="flex items-center gap-1"
+            >
+              Name
+            </div>
+          </th>
+          <th
+            class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap"
+          >
+            <div
+              class="flex items-center gap-1"
+            >
+              HP
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        class="divide-y divide-gray-100"
+      >
+        <tr
+          class="h-18 bg-white hover:bg-gray-50 transition-colors"
+        >
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            1
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            bulbasaur
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            45
+          </td>
+        </tr>
+        <tr
+          class="h-18 bg-white hover:bg-gray-50 transition-colors"
+        >
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            2
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            ivysaur
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            60
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`Table > shows asc sort icon on the active sorted column 1`] = `
+<div>
+  <div
+    class="flex-1 min-h-0 overflow-auto rounded-xl border border-gray-200"
+  >
+    <table
+      class="w-full text-sm text-left"
+    >
+      <thead
+        class="bg-gray-50 text-gray-500 uppercase text-xs"
+      >
+        <tr>
+          <th
+            class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap"
+          >
+            <div
+              class="flex items-center gap-1"
+            >
+              #
+            </div>
+          </th>
+          <th
+            class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap"
+          >
+            <div
+              class="flex items-center gap-1"
+            >
+              Name
+            </div>
+          </th>
+          <th
+            class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap cursor-pointer select-none hover:text-gray-700"
+          >
+            <div
+              class="flex items-center gap-1"
+            >
+              HP
+              <svg
+                aria-hidden="true"
+                class="size-3 text-gray-700"
+                data-slot="icon"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m4.5 15.75 7.5-7.5 7.5 7.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        class="divide-y divide-gray-100"
+      >
+        <tr
+          class="h-18 bg-white hover:bg-gray-50 transition-colors"
+        >
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            1
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            bulbasaur
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            45
+          </td>
+        </tr>
+        <tr
+          class="h-18 bg-white hover:bg-gray-50 transition-colors"
+        >
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            2
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            ivysaur
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            60
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`Table > shows desc sort icon on the active sorted column 1`] = `
+<div>
+  <div
+    class="flex-1 min-h-0 overflow-auto rounded-xl border border-gray-200"
+  >
+    <table
+      class="w-full text-sm text-left"
+    >
+      <thead
+        class="bg-gray-50 text-gray-500 uppercase text-xs"
+      >
+        <tr>
+          <th
+            class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap"
+          >
+            <div
+              class="flex items-center gap-1"
+            >
+              #
+            </div>
+          </th>
+          <th
+            class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap"
+          >
+            <div
+              class="flex items-center gap-1"
+            >
+              Name
+            </div>
+          </th>
+          <th
+            class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap cursor-pointer select-none hover:text-gray-700"
+          >
+            <div
+              class="flex items-center gap-1"
+            >
+              HP
+              <svg
+                aria-hidden="true"
+                class="size-3 text-gray-700"
+                data-slot="icon"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        class="divide-y divide-gray-100"
+      >
+        <tr
+          class="h-18 bg-white hover:bg-gray-50 transition-colors"
+        >
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            1
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            bulbasaur
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            45
+          </td>
+        </tr>
+        <tr
+          class="h-18 bg-white hover:bg-gray-50 transition-colors"
+        >
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            2
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            ivysaur
+          </td>
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            60
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

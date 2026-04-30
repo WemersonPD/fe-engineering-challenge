@@ -18,7 +18,7 @@ export default function TableView({
       key: 'id',
       header: '#',
       sortKey: 'id',
-      render: (_, row) => (
+      render: (row) => (
         <div className="flex items-center gap-2">
           <img
             src={row.image}
@@ -35,8 +35,8 @@ export default function TableView({
       key: 'name',
       header: 'Name',
       sortKey: 'name',
-      render: (v) => (
-        <span className="capitalize">{String(v).replace(/-/g, ' ')}</span>
+      render: (row) => (
+        <span className="capitalize">{row.name.replace(/-/g, ' ')}</span>
       ),
     },
     { key: 'height', header: 'Height', sortKey: 'height' },
@@ -51,19 +51,19 @@ export default function TableView({
       key: 'types',
       header: 'Types',
       sortKey: 'types',
-      render: (v) => (
+      render: (row) => (
         <div className="flex flex-wrap gap-1">
-          {(v as string[]).map((t) => (
+          {row.types.map((t) => (
             <Badge key={t} type={t} />
           ))}
         </div>
       ),
     },
     {
-      key: 'image',
+      key: 'caughtAt',
       header: 'Added to Pokédex',
       sortKey: 'timestamp',
-      render: (_, row) => {
+      render: (row) => {
         const entry = caught.get(row.id)
         return entry ? new Date(entry.caughtAt).toLocaleDateString() : '—'
       },
@@ -71,13 +71,15 @@ export default function TableView({
     {
       key: 'actions',
       header: 'Actions',
-      render: (_, row) => {
-        const isCaught = caught.has(row.id)
-        return isCaught ? (
-          <Button variant="red" onClick={() => onRelease(row.id)}>
-            Release
-          </Button>
-        ) : (
+      render: (row) => {
+        if (caught.has(row.id)) {
+          return (
+            <Button variant="red" onClick={() => onRelease(row.id)}>
+              Release
+            </Button>
+          )
+        }
+        return (
           <Button variant="green" onClick={() => onCatch(row)}>
             Catch
           </Button>
@@ -88,8 +90,11 @@ export default function TableView({
 
   const handleSort = (sortKey: string) => {
     const field = sortKey as SortField
-    const order = sort.field === field && sort.order === 'asc' ? 'desc' : 'asc'
-    onSortChange({ field, order })
+    if (sort.field === field && sort.order === 'asc') {
+      onSortChange({ field, order: 'desc' })
+      return
+    }
+    onSortChange({ field, order: 'asc' })
   }
 
   return (

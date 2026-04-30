@@ -10,7 +10,7 @@ export interface Column<T> {
   key: string
   header: string
   sortKey?: string
-  render?: (value: unknown, row: T) => ReactNode
+  render?: (row: T) => ReactNode
 }
 
 interface Sort {
@@ -24,6 +24,14 @@ interface TableProps<T> {
   sort?: Sort
   onSort?: (sortKey: string) => void
   className?: string
+}
+
+function SortIcon({ active, asc }: { active: boolean; asc: boolean }) {
+  if (!active) return <ChevronUpDownIcon className="size-3 text-gray-300" />
+
+  if (asc) return <ChevronUpIcon className="size-3 text-gray-700" />
+
+  return <ChevronDownIcon className="size-3 text-gray-700" />
 }
 
 export default function Table<T extends { id: number }>({
@@ -44,32 +52,24 @@ export default function Table<T extends { id: number }>({
         <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
           <tr>
             {columns.map((col) => {
-              const isSortable = !!col.sortKey && !!onSort
-              const isActive = sort?.field === col.sortKey
-              const isAsc = isActive && sort?.order === 'asc'
+              const sortable = !!col.sortKey && !!onSort
+              const active = sort?.field === col.sortKey
 
               return (
                 <th
                   key={col.key}
                   className={cn(
                     'sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap',
-                    isSortable &&
+                    sortable &&
                       'cursor-pointer select-none hover:text-gray-700',
                   )}
-                  onClick={isSortable ? () => onSort!(col.sortKey!) : undefined}
+                  onClick={sortable ? () => onSort!(col.sortKey!) : undefined}
                 >
                   <div className="flex items-center gap-1">
                     {col.header}
-                    {isSortable &&
-                      (isActive ? (
-                        isAsc ? (
-                          <ChevronUpIcon className="size-3 text-gray-700" />
-                        ) : (
-                          <ChevronDownIcon className="size-3 text-gray-700" />
-                        )
-                      ) : (
-                        <ChevronUpDownIcon className="size-3 text-gray-300" />
-                      ))}
+                    {sortable && (
+                      <SortIcon active={active} asc={sort?.order === 'asc'} />
+                    )}
                   </div>
                 </th>
               )
@@ -83,14 +83,13 @@ export default function Table<T extends { id: number }>({
               key={row.id}
               className="h-18 bg-white hover:bg-gray-50 transition-colors"
             >
-              {columns.map((col) => {
-                const value = (row as Record<string, unknown>)[col.key]
-                return (
-                  <td key={col.key} className="px-4 py-3 text-gray-700">
-                    {col.render ? col.render(value, row) : String(value ?? '')}
-                  </td>
-                )
-              })}
+              {columns.map((col) => (
+                <td key={col.key} className="px-4 py-3 text-gray-700">
+                  {col.render
+                    ? col.render(row)
+                    : String((row as Record<string, unknown>)[col.key] ?? '')}
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>

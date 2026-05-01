@@ -1,6 +1,7 @@
 import Table, { type Column } from '../../molecules/Table'
 import Badge from '../../atoms/Badge'
 import Button from '../../atoms/Button'
+import { formatPokemonId, formatHeight, formatWeight } from '../../../utils/pokemon'
 import type { SortField } from '../../../types/filters'
 import type { Pokemon } from '../../../types/pokemon'
 import type { ViewProps } from './types'
@@ -26,7 +27,7 @@ export default function TableView({
             className="w-8 h-8 object-contain"
           />
           <span className="text-gray-400 text-xs">
-            {String(row.id).padStart(4, '0')}
+            {formatPokemonId(row.id)}
           </span>
         </div>
       ),
@@ -39,8 +40,8 @@ export default function TableView({
         <span className="capitalize">{row.name.replace(/-/g, ' ')}</span>
       ),
     },
-    { key: 'height', header: 'Height', sortKey: 'height' },
-    { key: 'weight', header: 'Weight' },
+    { key: 'height', header: 'Height', sortKey: 'height', render: (row) => formatHeight(row.height) },
+    { key: 'weight', header: 'Weight', render: (row) => formatWeight(row.weight) },
     { key: 'hp', header: 'HP' },
     { key: 'speed', header: 'Speed' },
     { key: 'attack', header: 'Attack' },

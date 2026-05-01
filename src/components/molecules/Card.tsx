@@ -2,6 +2,11 @@ import type { CaughtPokemon, Pokemon } from '../../types/pokemon'
 import Button from '../atoms/Button'
 import Text from '../atoms/Text'
 import Badge from '../atoms/Badge'
+import {
+  formatHeight,
+  formatPokemonId,
+  formatWeight,
+} from '../../utils/pokemon'
 
 const COLOR_GRADIENT: Record<string, string> = {
   black: 'from-gray-200',
@@ -46,7 +51,7 @@ export default function Card({
       {/* Header */}
       <div className="px-4 pt-4 pb-2">
         <Text tag="p" variant="sm" className="text-gray-500 font-medium">
-          Basic Pokemon
+          {formatPokemonId(pokemon.id)}
         </Text>
 
         <div className="flex items-center justify-between gap-2 mt-0.5">
@@ -83,8 +88,9 @@ export default function Card({
       <div className="mx-3 mt-3 bg-amber-400 py-1.5 px-3 text-center rounded-sm">
         <Text tag="p" variant="base" className="text-amber-900">
           <span className="sr-only">Height: </span>
-          Length {pokemon.height}, <span className="sr-only">Weight: </span>
-          weight: {pokemon.weight}
+          Length {formatHeight(pokemon.height)},{' '}
+          <span className="sr-only">Weight: </span>
+          Weight: {formatWeight(pokemon.weight)}
         </Text>
       </div>
 
@@ -133,7 +139,9 @@ export default function Card({
       <div className="border-t border-gray-200 mx-3" />
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex flex-wrap gap-1">
-          {pokemon.types.map((t) => <Badge key={t} type={t} />)}
+          {pokemon.types.map((t) => (
+            <Badge key={t} type={t} />
+          ))}
         </div>
         <Text tag="span" variant="base" className="text-gray-800">
           {pokemon.attack}

@@ -2,6 +2,7 @@ import Table, { type Column } from '../../molecules/Table'
 import Badge from '../../atoms/Badge'
 import Button from '../../atoms/Button'
 import { formatPokemonId, formatHeight, formatWeight } from '../../../utils/pokemon'
+import Link from '../../atoms/Link'
 import type { SortField } from '../../../types/filters'
 import type { Pokemon } from '../../../types/pokemon'
 import type { ViewProps } from './types'
@@ -37,7 +38,9 @@ export default function TableView({
       header: 'Name',
       sortKey: 'name',
       render: (row) => (
-        <span className="capitalize">{row.name.replace(/-/g, ' ')}</span>
+        <Link to={`/pokemon/${row.id}`} className="capitalize">
+          {row.name.replace(/-/g, ' ')}
+        </Link>
       ),
     },
     { key: 'height', header: 'Height', sortKey: 'height', render: (row) => formatHeight(row.height) },

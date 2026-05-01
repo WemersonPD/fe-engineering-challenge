@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Textarea > matches snapshot 1`] = `
+<div>
+  <div
+    class="flex flex-col gap-1.5"
+  >
+    <label
+      class="text-sm font-medium text-gray-600"
+      for="note"
+    >
+      Note
+    </label>
+    <textarea
+      class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+      id="note"
+    />
+  </div>
+</div>
+`;

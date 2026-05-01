@@ -3,7 +3,7 @@
 exports[`Button > matches snapshot 1`] = `
 <div>
   <button
-    class="py-1.5 px-4 rounded-xl text-sm font-medium transition-colors cursor-pointer bg-green-100 text-green-700 hover:bg-green-200"
+    class="py-1.5 px-4 rounded-xl text-sm font-medium transition-colors cursor-pointer bg-green-100 text-green-700 hover:bg-green-200 disabled:opacity-40 disabled:cursor-not-allowed"
     type="button"
   >
     Catch

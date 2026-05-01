@@ -3,6 +3,7 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import Badge from '../atoms/Badge'
 import Button from '../atoms/Button'
 import Text from '../atoms/Text'
+import NoteForm from '../molecules/NoteForm'
 import { usePokemon } from '../../hooks/usePokemon'
 import { usePokedex } from '../../hooks/usePokedex'
 import {
@@ -26,6 +27,7 @@ export default function PokemonDetails() {
   const navigate = useNavigate()
   const { pokemon, loading, error } = usePokemon(id)
   const pokedex = usePokedex()
+  const caughtEntry = pokemon ? pokedex.caught.get(pokemon.id) : undefined
 
   if (loading)
     return (
@@ -170,6 +172,13 @@ export default function PokemonDetails() {
               </div>
             ))}
           </div>
+
+          {pokedex.isCaught(pokemon.id) && (
+            <NoteForm
+              defaultValue={caughtEntry?.note}
+              onSubmit={(note) => pokedex.updateNote(pokemon.id, note)}
+            />
+          )}
         </div>
       </div>
     </div>

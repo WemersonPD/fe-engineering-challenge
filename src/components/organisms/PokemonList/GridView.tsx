@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { BarsArrowUpIcon, BarsArrowDownIcon } from '@heroicons/react/24/outline'
 import Card from '../../molecules/Card'
 import Dropdown from '../../atoms/Dropdown'
@@ -48,12 +49,14 @@ export default function GridView({
       <ul className="flex flex-wrap gap-4" aria-label="Pokémon list">
         {pokemon.map((p) => (
           <li key={p.id}>
-            <Card
-              pokemon={p}
-              caught={caught.get(p.id)}
-              onCatch={onCatch}
-              onRelease={onRelease}
-            />
+            <Link to={`/pokemon/${p.id}`}>
+              <Card
+                pokemon={p}
+                caught={caught.get(p.id)}
+                onCatch={onCatch}
+                onRelease={onRelease}
+              />
+            </Link>
           </li>
         ))}
       </ul>

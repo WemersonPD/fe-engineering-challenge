@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import type { CaughtPokemon, Pokemon } from '../../types/pokemon'
 import Button from '../atoms/Button'
 import Text from '../atoms/Text'
@@ -40,15 +39,13 @@ export default function Card({
   onCatch,
   onRelease,
 }: CardProps) {
-  const navigate = useNavigate()
   const isCaught = !!caught
   const formattedName = capitalize(pokemon.name.replace(/-/g, ' '))
   const primaryType = pokemon.types[0]
   const gradientFrom = COLOR_GRADIENT[pokemon.color] ?? 'from-gray-50'
 
-  const onActionCardClicked = (
-    e: MouseEvent<HTMLButtonElement>,
-  ) => {
+  const onActionCardClicked = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
     e.stopPropagation()
 
     if (isCaught) {
@@ -62,8 +59,7 @@ export default function Card({
   return (
     <article
       aria-label={`${formattedName}, ${pokemon.hp} HP, ${isCaught ? 'caught' : 'not caught'}`}
-      className={`w-64 flex flex-col rounded-2xl bg-linear-to-b ${gradientFrom} to-white border-2 border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer`}
-      onClick={() => navigate(`/pokemon/${pokemon.id}`)}
+      className={`w-64 flex flex-col rounded-2xl bg-linear-to-b ${gradientFrom} to-white border-2 border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow`}
     >
       {/* Header */}
       <div className="px-4 pt-4 pb-2">

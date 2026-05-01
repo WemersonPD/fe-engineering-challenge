@@ -7,7 +7,12 @@ interface DefaultLayoutProps {
   pagination?: ReactNode
 }
 
-function DefaultLayout({ topBar, sidebar, content, pagination }: DefaultLayoutProps) {
+function DefaultLayout({
+  topBar,
+  sidebar,
+  content,
+  pagination,
+}: DefaultLayoutProps) {
   return (
     <div className="relative h-screen flex flex-col bg-gray-50 overflow-hidden">
       <a
@@ -19,7 +24,7 @@ function DefaultLayout({ topBar, sidebar, content, pagination }: DefaultLayoutPr
 
       <header
         role="banner"
-        className="w-full px-4 py-4 sm:px-6 lg:px-8 shrink-0 border-b border-gray-200"
+        className="w-full px-4 py-4 sm:px-6 lg:px-8 shrink-0 border-b border-gray-200 flex items-center gap-3"
       >
         {topBar}
       </header>
@@ -33,7 +38,10 @@ function DefaultLayout({ topBar, sidebar, content, pagination }: DefaultLayoutPr
         </aside>
 
         <div className="flex flex-col flex-1 min-h-0 lg:pl-8">
-          <main id="main-content" className="flex-1 min-h-0 overflow-hidden py-6 flex flex-col">
+          <main
+            id="main-content"
+            className="flex-1 min-h-0 overflow-hidden py-6 flex flex-col"
+          >
             {content}
           </main>
 

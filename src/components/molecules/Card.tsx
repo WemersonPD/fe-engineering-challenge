@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import type { CaughtPokemon, Pokemon } from '../../types/pokemon'
 import Button from '../atoms/Button'
 import Text from '../atoms/Text'
@@ -7,6 +8,7 @@ import {
   formatPokemonId,
   formatWeight,
 } from '../../utils/pokemon'
+import type { MouseEvent } from 'react'
 
 const COLOR_GRADIENT: Record<string, string> = {
   black: 'from-gray-200',
@@ -38,15 +40,30 @@ export default function Card({
   onCatch,
   onRelease,
 }: CardProps) {
+  const navigate = useNavigate()
   const isCaught = !!caught
   const formattedName = capitalize(pokemon.name.replace(/-/g, ' '))
   const primaryType = pokemon.types[0]
   const gradientFrom = COLOR_GRADIENT[pokemon.color] ?? 'from-gray-50'
 
+  const onActionCardClicked = (
+    e: MouseEvent<HTMLButtonElement>,
+  ) => {
+    e.stopPropagation()
+
+    if (isCaught) {
+      onRelease(pokemon.id)
+      return
+    }
+
+    onCatch(pokemon)
+  }
+
   return (
     <article
       aria-label={`${formattedName}, ${pokemon.hp} HP, ${isCaught ? 'caught' : 'not caught'}`}
-      className={`w-64 flex flex-col rounded-2xl bg-linear-to-b ${gradientFrom} to-white border-2 border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow`}
+      className={`w-64 flex flex-col rounded-2xl bg-linear-to-b ${gradientFrom} to-white border-2 border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer`}
+      onClick={() => navigate(`/pokemon/${pokemon.id}`)}
     >
       {/* Header */}
       <div className="px-4 pt-4 pb-2">
@@ -153,7 +170,7 @@ export default function Card({
       <div className="px-3 py-3">
         <Button
           variant={isCaught ? 'red' : 'green'}
-          onClick={() => (isCaught ? onRelease(pokemon.id) : onCatch(pokemon))}
+          onClick={(e) => onActionCardClicked(e)}
           aria-pressed={isCaught}
           className="w-full"
         >

@@ -117,5 +117,5 @@ export function useAllPokemon(
     return sortPokemon(filtered, caught, sort)
   }, [allPokemon, filters, sort, caught])
 
-  return { pokemon, loading, error }
+  return { pokemon, totalPokemon: allPokemon.length, loading, error }
 }

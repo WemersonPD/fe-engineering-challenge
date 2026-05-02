@@ -20,6 +20,8 @@ export default function GridView({
   onSortChange,
   onCatch,
   onRelease,
+  selectedIds,
+  onToggleSelect,
 }: ViewProps) {
   return (
     <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-4">
@@ -33,28 +35,41 @@ export default function GridView({
         />
         <button
           type="button"
-          aria-label={sort.order === 'asc' ? 'Sort ascending' : 'Sort descending'}
+          aria-label={
+            sort.order === 'asc' ? 'Sort ascending' : 'Sort descending'
+          }
           onClick={() =>
-            onSortChange({ ...sort, order: sort.order === 'asc' ? 'desc' : 'asc' })
+            onSortChange({
+              ...sort,
+              order: sort.order === 'asc' ? 'desc' : 'asc',
+            })
           }
           className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm hover:bg-gray-100"
         >
-          {sort.order === 'asc'
-            ? <BarsArrowUpIcon className="size-4" />
-            : <BarsArrowDownIcon className="size-4" />
-          }
+          {sort.order === 'asc' ? (
+            <BarsArrowUpIcon className="size-4" />
+          ) : (
+            <BarsArrowDownIcon className="size-4" />
+          )}
         </button>
       </div>
 
       <ul className="flex flex-wrap gap-4" aria-label="Pokémon list">
         {pokemon.map((p) => (
-          <li key={p.id}>
-            <Link to={`/pokemon/${p.id}`}>
+          <li id={`pokemon-${p.id}`} key={p.id}>
+            <Link
+              to={`/pokemon/${p.id}`}
+              id={`pokemon-link-${p.id}`}
+              key={`pokemon-link-${p.id}`}
+            >
               <Card
+                key={`pokemon-link-${p.id}`}
                 pokemon={p}
                 caught={caught.get(p.id)}
                 onCatch={onCatch}
                 onRelease={onRelease}
+                selected={selectedIds.has(p.id)}
+                onToggleSelect={onToggleSelect}
               />
             </Link>
           </li>

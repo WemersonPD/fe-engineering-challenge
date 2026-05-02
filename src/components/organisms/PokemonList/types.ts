@@ -8,4 +8,6 @@ export interface ViewProps {
   onSortChange: (sort: Sort) => void
   onCatch: (pokemon: Pokemon) => void
   onRelease: (id: number) => void
+  selectedIds: Set<number>
+  onToggleSelect?: (id: number) => void
 }

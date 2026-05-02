@@ -6,13 +6,21 @@ type CheckboxProps = {
   className?: string
 } & Omit<ComponentPropsWithoutRef<'input'>, 'className' | 'type'>
 
-export default function Checkbox({ label, id, className, ...rest }: CheckboxProps) {
+export default function Checkbox({
+  label,
+  id,
+  className,
+  ...rest
+}: CheckboxProps) {
   return (
-    <label htmlFor={id} className={cn('flex items-center gap-2 cursor-pointer', className)}>
+    <label
+      htmlFor={id}
+      className={cn('flex items-center gap-2 cursor-pointer', className)}
+    >
       <input
         id={id}
         type="checkbox"
-        className="accent-gray-600"
+        className="accent-gray-600 cursor-pointer"
         {...rest}
       />
       {label && <span className="text-sm text-gray-600">{label}</span>}

@@ -11,6 +11,7 @@ import { usePokedex } from '../../hooks/usePokedex'
 import type { Sort } from '../../types/filters'
 import type { Pokemon } from '../../types/pokemon'
 import TopBar from '../molecules/TopBar'
+import PokedexToggle from '../atoms/PokedexToggle'
 
 type ViewMode = 'grid' | 'table'
 
@@ -53,7 +54,7 @@ export default function Home() {
 
   const pokedex = usePokedex()
   const debouncedFilters = useDebounce(filters)
-  const { pokemon, loading, error } = useAllPokemon(
+  const { pokemon, totalPokemon, loading, error } = useAllPokemon(
     debouncedFilters,
     sort,
     pokedex.caught,
@@ -123,8 +124,7 @@ export default function Home() {
 
         <div className="flex items-center gap-3 text-sm text-gray-600">
           <span>
-            Available:{' '}
-            <strong className="text-gray-900">{pokemon.length}</strong>
+            Available: <strong className="text-gray-900">{totalPokemon}</strong>
           </span>
           <span className="text-gray-300">|</span>
           <span>
@@ -138,24 +138,32 @@ export default function Home() {
     </>
   )
 
+  const togglePokedexView = () => {
+    setFilters((prev) => ({ ...prev, caughtOnly: !prev.caughtOnly }))
+  }
+
   return (
-    <HomeLayout
-      topBar={<TopBar />}
-      sidebar={
-        <FilterPanel
-          filters={filters}
-          onChange={setFilters}
-          onClear={() => setFilters(DEFAULT_FILTERS)}
-        />
-      }
-      content={content}
-      pagination={
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          onPageChange={setPage}
-        />
-      }
-    />
+    <>
+      <HomeLayout
+        topBar={<TopBar />}
+        sidebar={
+          <FilterPanel
+            filters={filters}
+            onChange={setFilters}
+            onClear={() => setFilters(DEFAULT_FILTERS)}
+          />
+        }
+        content={content}
+        pagination={
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        }
+      />
+
+      <PokedexToggle active={filters.caughtOnly} onClick={togglePokedexView} />
+    </>
   )
 }

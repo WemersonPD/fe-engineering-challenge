@@ -1,5 +1,10 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Bars3Icon, Squares2X2Icon } from '@heroicons/react/24/outline'
+import {
+  Bars3Icon,
+  Squares2X2Icon,
+  TrashIcon,
+} from '@heroicons/react/24/outline'
+import Button from '../atoms/Button'
 import FilterPanel, { type Filters } from '../organisms/FilterPanel'
 import PokemonList from '../organisms/PokemonList'
 import Pagination from '../molecules/Pagination'
@@ -8,6 +13,7 @@ import HomeLayout from '../templates/HomoLayout'
 import { useAllPokemon } from '../../hooks/useAllPokemon'
 import { useDebounce } from '../../hooks/useDebounce'
 import { usePokedex } from '../../hooks/usePokedex'
+import { useBulkSelect } from '../../hooks/useBulkSelect'
 import type { Sort } from '../../types/filters'
 import type { Pokemon } from '../../types/pokemon'
 import TopBar from '../molecules/TopBar'
@@ -51,8 +57,8 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS)
   const [sort, setSort] = useState<Sort>(DEFAULT_SORT)
-
   const pokedex = usePokedex()
+  const bulk = useBulkSelect({ releaseMany: pokedex.releaseMany })
   const debouncedFilters = useDebounce(filters)
   const { pokemon, totalPokemon, loading, error } = useAllPokemon(
     debouncedFilters,
@@ -61,11 +67,12 @@ export default function Home() {
   )
 
   useEffect(() => {
-    const restartPages = () => {
+    const resetView = () => {
       setPage(0)
+      bulk.exitBulkMode()
     }
 
-    restartPages()
+    resetView()
   }, [filters, sort, viewMode])
 
   const pageSize = useMemo(() => {
@@ -109,8 +116,17 @@ export default function Home() {
         onSortChange={setSort}
         onCatch={handleCatch}
         onRelease={pokedex.release}
+        selectedIds={bulk.selectedIds}
+        onToggleSelect={bulk.bulkSelectMode ? bulk.toggleSelect : undefined}
       />
     )
+  }
+
+  const togglePokedexView = () => {
+    setFilters((prev) => {
+      if (prev.caughtOnly) bulk.exitBulkMode()
+      return { ...prev, caughtOnly: !prev.caughtOnly }
+    })
   }
 
   const content = (
@@ -123,6 +139,26 @@ export default function Home() {
         />
 
         <div className="flex items-center gap-3 text-sm text-gray-600">
+          {bulk.bulkSelectMode && bulk.selectedIds.size > 0 && (
+            <Button
+              variant="red"
+              onClick={bulk.bulkRelease}
+              className="flex items-center gap-1.5"
+            >
+              <TrashIcon className="w-4 h-4" />
+              Release {bulk.selectedIds.size}
+            </Button>
+          )}
+
+          {filters.caughtOnly && (
+            <Button
+              variant={bulk.bulkSelectMode ? 'red' : 'gray'}
+              onClick={bulk.toggleBulkMode}
+            >
+              {bulk.bulkSelectMode ? 'Cancel' : 'Select'}
+            </Button>
+          )}
+
           <span>
             Available: <strong className="text-gray-900">{totalPokemon}</strong>
           </span>
@@ -137,10 +173,6 @@ export default function Home() {
       {renderList()}
     </>
   )
-
-  const togglePokedexView = () => {
-    setFilters((prev) => ({ ...prev, caughtOnly: !prev.caughtOnly }))
-  }
 
   return (
     <>

@@ -2,6 +2,7 @@ import type { CaughtPokemon, Pokemon } from '../../types/pokemon'
 import Button from '../atoms/Button'
 import Text from '../atoms/Text'
 import Badge from '../atoms/Badge'
+import Checkbox from '../atoms/Checkbox'
 import {
   formatHeight,
   formatPokemonId,
@@ -27,6 +28,8 @@ interface CardProps {
   caught?: CaughtPokemon
   onCatch: (pokemon: Pokemon) => void
   onRelease: (id: number) => void
+  selected?: boolean
+  onToggleSelect?: (id: number) => void
 }
 
 function capitalize(str: string): string {
@@ -38,6 +41,8 @@ export default function Card({
   caught,
   onCatch,
   onRelease,
+  selected = false,
+  onToggleSelect,
 }: CardProps) {
   const isCaught = !!caught
   const formattedName = capitalize(pokemon.name.replace(/-/g, ' '))
@@ -56,6 +61,12 @@ export default function Card({
     onCatch(pokemon)
   }
 
+  const onCardSelected = () => {
+    if (!isCaught || !onToggleSelect) return
+
+    onToggleSelect(pokemon.id)
+  }
+
   return (
     <article
       aria-label={`${formattedName}, ${pokemon.hp} HP, ${isCaught ? 'caught' : 'not caught'}`}
@@ -63,9 +74,23 @@ export default function Card({
     >
       {/* Header */}
       <div className="px-4 pt-4 pb-2">
-        <Text tag="p" variant="sm" className="text-gray-500 font-medium">
-          {formatPokemonId(pokemon.id)}
-        </Text>
+        <div className="flex items-center gap-2">
+          {isCaught && onToggleSelect && (
+            <Checkbox
+              id={`select-pokemon-${pokemon.id}`}
+              aria-label={`Select ${formattedName} for bulk release`}
+              checked={selected}
+              onChange={onCardSelected}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            />
+          )}
+
+          <Text tag="p" variant="sm" className="text-gray-500 font-medium">
+            {formatPokemonId(pokemon.id)}
+          </Text>
+        </div>
 
         <div className="flex items-center justify-between gap-2 mt-0.5">
           <h3 className="text-xl font-bold text-gray-900 truncate">
@@ -166,7 +191,7 @@ export default function Card({
       <div className="px-3 py-3">
         <Button
           variant={isCaught ? 'red' : 'green'}
-          onClick={(e) => onActionCardClicked(e)}
+          onClick={onActionCardClicked}
           aria-pressed={isCaught}
           className="w-full"
         >

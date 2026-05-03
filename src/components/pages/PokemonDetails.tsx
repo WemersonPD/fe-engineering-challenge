@@ -5,6 +5,7 @@ import Button from '../atoms/Button'
 import ActionButton from '../atoms/ActionButton'
 import Text from '../atoms/Text'
 import NoteForm from '../molecules/NoteForm'
+import PokemonImage from '../atoms/PokemonImage'
 import { usePokemon } from '../../hooks/usePokemon'
 import { usePokedex } from '../../hooks/usePokedex'
 import {
@@ -86,13 +87,12 @@ export default function PokemonDetails() {
       </Button>
 
       <div className="max-w-lg mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="flex justify-center bg-gray-50 py-8">
-          <img
-            src={pokemon.image}
-            alt={pokemon.name}
-            className="w-48 h-48 object-contain"
-          />
-        </div>
+        <PokemonImage
+          src={pokemon.image}
+          alt={pokemon.name}
+          isCaught={pokedex.isCaught(pokemon.id)}
+          size="lg"
+        />
 
         <div className="p-6">
           <div className="flex items-center justify-between mb-3">

@@ -188,7 +188,7 @@ exports[`TableView > matches snapshot 1`] = `
             <div
               class="flex items-center gap-1"
             >
-              Added to Pokédex
+              Caught At
               <svg
                 aria-hidden="true"
                 class="size-3 text-gray-300"
@@ -248,6 +248,7 @@ exports[`TableView > matches snapshot 1`] = `
               <img
                 alt="mr-mime"
                 class="w-8 h-8 object-contain"
+                loading="lazy"
                 src="mr-mime.png"
               />
               <span

@@ -29,7 +29,7 @@ exports[`PokemonImage > matches snapshot (sm, not caught) 1`] = `
   >
     <img
       alt="Bulbasaur"
-      class="w-4/5 h-4/5 object-contain mix-blend-multiply"
+      class="w-4/5 h-4/5 max-w-32 max-h-32 object-contain mix-blend-multiply"
       loading="lazy"
       src="/bulbasaur.png"
     />

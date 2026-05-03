@@ -69,9 +69,11 @@ exports[`GridView > matches snapshot 1`] = `
       class="flex flex-wrap gap-4 justify-center"
     >
       <li
+        class="w-full sm:w-auto"
         id="pokemon-1"
       >
         <a
+          class="block w-full sm:w-auto"
           data-discover="true"
           href="/pokemon/1"
           id="pokemon-link-1"
@@ -128,7 +130,7 @@ exports[`GridView > matches snapshot 1`] = `
             >
               <img
                 alt="Charmander"
-                class="w-4/5 h-4/5 object-contain mix-blend-multiply"
+                class="w-4/5 h-4/5 max-w-32 max-h-32 object-contain mix-blend-multiply"
                 loading="lazy"
                 src="charmander.png"
               />
@@ -290,9 +292,11 @@ exports[`GridView > matches snapshot 1`] = `
         </a>
       </li>
       <li
+        class="w-full sm:w-auto"
         id="pokemon-2"
       >
         <a
+          class="block w-full sm:w-auto"
           data-discover="true"
           href="/pokemon/2"
           id="pokemon-link-2"
@@ -349,7 +353,7 @@ exports[`GridView > matches snapshot 1`] = `
             >
               <img
                 alt="Charmeleon"
-                class="w-4/5 h-4/5 object-contain mix-blend-multiply"
+                class="w-4/5 h-4/5 max-w-32 max-h-32 object-contain mix-blend-multiply"
                 loading="lazy"
                 src="charmeleon.png"
               />

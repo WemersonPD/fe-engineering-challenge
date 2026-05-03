@@ -23,6 +23,7 @@ interface TableProps<T> {
   data: T[]
   sort?: Sort
   onSort?: (sortKey: string) => void
+  onRowClick?: (row: T) => void
   className?: string
 }
 
@@ -39,6 +40,7 @@ export default function Table<T extends { id: number }>({
   data,
   sort,
   onSort,
+  onRowClick,
   className,
 }: TableProps<T>) {
   return (
@@ -81,7 +83,11 @@ export default function Table<T extends { id: number }>({
           {data.map((row) => (
             <tr
               key={row.id}
-              className="h-18 bg-white hover:bg-gray-50 transition-colors"
+              onClick={() => onRowClick?.(row)}
+              className={cn(
+                'h-18 bg-white hover:bg-gray-50 transition-colors',
+                onRowClick && 'cursor-pointer',
+              )}
             >
               {columns.map((col) => (
                 <td key={col.key} className="px-4 py-3 text-gray-700">

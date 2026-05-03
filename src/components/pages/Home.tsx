@@ -69,7 +69,6 @@ export default function Home() {
   useEffect(() => {
     const resetView = () => {
       setPage(0)
-      bulk.exitBulkMode()
     }
 
     resetView()

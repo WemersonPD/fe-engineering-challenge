@@ -6,6 +6,7 @@ import Checkbox from '../atoms/Checkbox'
 import {
   formatHeight,
   formatPokemonId,
+  formatPokemonName,
   formatWeight,
 } from '../../utils/pokemon'
 import type { MouseEvent } from 'react'
@@ -45,7 +46,7 @@ export default function Card({
   onToggleSelect,
 }: CardProps) {
   const isCaught = !!caught
-  const formattedName = capitalize(pokemon.name.replace(/-/g, ' '))
+  const formattedName = formatPokemonName(pokemon.name)
   const primaryType = pokemon.types[0]
   const gradientFrom = COLOR_GRADIENT[pokemon.color] ?? 'from-gray-50'
 

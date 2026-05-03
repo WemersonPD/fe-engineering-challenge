@@ -28,6 +28,8 @@ const defaultProps = {
   onSortChange: vi.fn(),
   onCatch: vi.fn(),
   onRelease: vi.fn(),
+  selectedIds: new Set<number>(),
+  onToggleSelect: vi.fn(),
 }
 
 beforeEach(() => vi.clearAllMocks())

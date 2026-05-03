@@ -4,6 +4,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import TableView from './TableView'
 import type { CaughtPokemon, Pokemon } from '../../../types/pokemon'
 import type { Sort } from '../../../types/filters'
+import type { ViewProps } from './types'
 
 const pokemon: Pokemon = {
   id: 1,
@@ -21,15 +22,22 @@ const pokemon: Pokemon = {
   types: ['psychic'],
 }
 
-const caughtEntry: CaughtPokemon = { id: 1, name: 'mr-mime', caughtAt: '2026-04-28T10:00:00.000Z', note: '' }
+const caughtEntry: CaughtPokemon = {
+  id: 1,
+  name: 'mr-mime',
+  caughtAt: '2026-04-28T10:00:00.000Z',
+  note: '',
+}
 
-const defaultProps = {
+const defaultProps: ViewProps = {
   pokemon: [pokemon],
   caught: new Map<number, CaughtPokemon>(),
   sort: { field: 'id', order: 'asc' } as Sort,
   onSortChange: vi.fn(),
   onCatch: vi.fn(),
   onRelease: vi.fn(),
+  selectedIds: new Set<number>(),
+  onToggleSelect: vi.fn(),
 }
 
 const renderWithRouter = (ui: React.ReactElement) =>
@@ -45,7 +53,7 @@ describe('TableView', () => {
 
   it('formats hyphenated names', () => {
     renderWithRouter(<TableView {...defaultProps} />)
-    expect(screen.getByText('mr mime')).toBeInTheDocument()
+    expect(screen.getByText('Mr mime')).toBeInTheDocument()
   })
 
   it('shows Catch for uncaught and calls onCatch', () => {
@@ -66,14 +74,49 @@ describe('TableView', () => {
     const { rerender } = renderWithRouter(<TableView {...defaultProps} />)
     expect(screen.getByText('—')).toBeInTheDocument()
 
-    rerender(<MemoryRouter><TableView {...defaultProps} caught={caught} /></MemoryRouter>)
-    expect(screen.getByText(new Date(caughtEntry.caughtAt).toLocaleDateString())).toBeInTheDocument()
+    rerender(
+      <MemoryRouter>
+        <TableView {...defaultProps} caught={caught} />
+      </MemoryRouter>,
+    )
+    expect(
+      screen.getByText(new Date(caughtEntry.caughtAt).toLocaleDateString()),
+    ).toBeInTheDocument()
+  })
+
+  describe('bulk select checkbox', () => {
+    it('does not render checkboxes when onToggleSelect is undefined', () => {
+      renderWithRouter(
+        <TableView {...defaultProps} onToggleSelect={undefined} />,
+      )
+      expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
+    })
+
+    it('renders a checkbox for each pokemon when onToggleSelect is provided', () => {
+      renderWithRouter(<TableView {...defaultProps} />)
+      expect(screen.getAllByRole('checkbox')).toHaveLength(1)
+    })
+
+    it('calls onToggleSelect with the pokemon id when checkbox is changed', () => {
+      const onToggleSelect = vi.fn()
+      renderWithRouter(
+        <TableView {...defaultProps} onToggleSelect={onToggleSelect} />,
+      )
+      fireEvent.click(screen.getByRole('checkbox'))
+      expect(onToggleSelect).toHaveBeenCalledWith(1)
+    })
   })
 
   describe('sorting', () => {
     it('sorts asc on first click, toggles to desc on second', () => {
       const onSortChange = vi.fn()
-      renderWithRouter(<TableView {...defaultProps} sort={{ field: 'id', order: 'asc' }} onSortChange={onSortChange} />)
+      renderWithRouter(
+        <TableView
+          {...defaultProps}
+          sort={{ field: 'id', order: 'asc' }}
+          onSortChange={onSortChange}
+        />,
+      )
 
       fireEvent.click(screen.getByRole('columnheader', { name: /name/i }))
       expect(onSortChange).toHaveBeenCalledWith({ field: 'name', order: 'asc' })
@@ -84,7 +127,9 @@ describe('TableView', () => {
 
     it('does not sort non-sortable columns', () => {
       const onSortChange = vi.fn()
-      renderWithRouter(<TableView {...defaultProps} onSortChange={onSortChange} />)
+      renderWithRouter(
+        <TableView {...defaultProps} onSortChange={onSortChange} />,
+      )
       fireEvent.click(screen.getByRole('columnheader', { name: /weight/i }))
       expect(onSortChange).not.toHaveBeenCalled()
     })

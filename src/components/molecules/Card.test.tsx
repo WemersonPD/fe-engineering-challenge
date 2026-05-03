@@ -3,6 +3,10 @@ import { describe, it, expect, vi } from 'vitest'
 import Card from './Card'
 import type { Pokemon, CaughtPokemon } from '../../types/pokemon'
 
+vi.mock('../../utils/share', () => ({
+  sharePokemon: vi.fn().mockResolvedValue({ success: true, message: '' }),
+}))
+
 const mockPokemon: Pokemon = {
   id: 1,
   name: 'bulbasaur',
@@ -72,6 +76,24 @@ describe('Card component', () => {
 
     expect(onRelease).toHaveBeenCalledOnce()
     expect(onRelease).toHaveBeenCalledWith(mockPokemon.id)
+  })
+
+  describe('Card share button', () => {
+    it('renders the share button', () => {
+      render(<Card pokemon={mockPokemon} onCatch={vi.fn()} onRelease={vi.fn()} />)
+
+      expect(screen.getByRole('button', { name: 'Share Bulbasaur' })).toBeInTheDocument()
+    })
+
+    it('calls sharePokemon with the pokemon id and name when share is clicked', async () => {
+      const { sharePokemon } = await import('../../utils/share')
+
+      render(<Card pokemon={mockPokemon} onCatch={vi.fn()} onRelease={vi.fn()} />)
+
+      fireEvent.click(screen.getByRole('button', { name: 'Share Bulbasaur' }))
+
+      expect(sharePokemon).toHaveBeenCalledWith(mockPokemon.id, 'Bulbasaur')
+    })
   })
 
   describe('Card checkbox', () => {

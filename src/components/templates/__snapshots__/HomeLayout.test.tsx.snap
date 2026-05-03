@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HomeLayout > matches snapshot 1`] = `
+<div>
+  <div
+    class="relative h-screen flex flex-col bg-gray-50 overflow-hidden"
+  >
+    <a
+      class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:underline"
+      href="#main-content"
+    >
+      Skip to main content
+    </a>
+    <header
+      class="w-full px-4 py-4 sm:px-6 lg:px-8 shrink-0 border-b border-gray-200 flex items-center gap-3"
+      role="banner"
+    >
+      <div>
+        TopBar
+      </div>
+    </header>
+    <div
+      class="flex flex-col lg:flex-row flex-1 min-h-0"
+    >
+      <div>
+        Sidebar
+      </div>
+      <div
+        class="flex flex-col flex-1 min-h-0 sm:px-8"
+      >
+        <main
+          class="flex-1 px-4 sm:px-0 min-h-0 overflow-hidden py-6 flex flex-col"
+          id="main-content"
+        >
+          <div>
+            Content
+          </div>
+        </main>
+        <div
+          class="shrink-0 py-4 border-t border-gray-200"
+        >
+          <div>
+            Pagination
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

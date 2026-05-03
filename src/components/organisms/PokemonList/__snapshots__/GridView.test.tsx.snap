@@ -68,10 +68,13 @@ exports[`GridView > matches snapshot 1`] = `
       aria-label="Pokémon list"
       class="flex flex-wrap gap-4"
     >
-      <li>
+      <li
+        id="pokemon-1"
+      >
         <a
           data-discover="true"
           href="/pokemon/1"
+          id="pokemon-link-1"
         >
           <article
             aria-label="Charmander, 50 HP, not caught"
@@ -80,11 +83,15 @@ exports[`GridView > matches snapshot 1`] = `
             <div
               class="px-4 pt-4 pb-2"
             >
-              <p
-                class="font-semibold text-xs leading-4 text-gray-500 font-medium"
+              <div
+                class="flex items-center gap-2"
               >
-                #0001
-              </p>
+                <p
+                  class="font-semibold text-xs leading-4 text-gray-500 font-medium"
+                >
+                  #0001
+                </p>
+              </div>
               <div
                 class="flex items-center justify-between gap-2 mt-0.5"
               >
@@ -263,10 +270,13 @@ exports[`GridView > matches snapshot 1`] = `
           </article>
         </a>
       </li>
-      <li>
+      <li
+        id="pokemon-2"
+      >
         <a
           data-discover="true"
           href="/pokemon/2"
+          id="pokemon-link-2"
         >
           <article
             aria-label="Charmeleon, 50 HP, not caught"
@@ -275,11 +285,15 @@ exports[`GridView > matches snapshot 1`] = `
             <div
               class="px-4 pt-4 pb-2"
             >
-              <p
-                class="font-semibold text-xs leading-4 text-gray-500 font-medium"
+              <div
+                class="flex items-center gap-2"
               >
-                #0002
-              </p>
+                <p
+                  class="font-semibold text-xs leading-4 text-gray-500 font-medium"
+                >
+                  #0002
+                </p>
+              </div>
               <div
                 class="flex items-center justify-between gap-2 mt-0.5"
               >

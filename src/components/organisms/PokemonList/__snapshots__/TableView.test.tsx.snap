@@ -13,6 +13,13 @@ exports[`TableView > matches snapshot 1`] = `
       >
         <tr>
           <th
+            class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap"
+          >
+            <div
+              class="flex items-center gap-1"
+            />
+          </th>
+          <th
             class="sticky top-0 z-10 bg-gray-50 px-4 py-3 font-medium whitespace-nowrap cursor-pointer select-none hover:text-gray-700"
           >
             <div
@@ -215,8 +222,23 @@ exports[`TableView > matches snapshot 1`] = `
         class="divide-y divide-gray-100"
       >
         <tr
-          class="h-18 bg-white hover:bg-gray-50 transition-colors"
+          class="h-18 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
         >
+          <td
+            class="px-4 py-3 text-gray-700"
+          >
+            <label
+              class="flex items-center gap-2 cursor-pointer"
+              for="select-table-pokemon-1"
+            >
+              <input
+                aria-label="Select mr-mime for bulk release"
+                class="accent-gray-600 cursor-pointer"
+                id="select-table-pokemon-1"
+                type="checkbox"
+              />
+            </label>
+          </td>
           <td
             class="px-4 py-3 text-gray-700"
           >
@@ -229,7 +251,7 @@ exports[`TableView > matches snapshot 1`] = `
                 src="mr-mime.png"
               />
               <span
-                class="text-gray-400 text-xs"
+                class="font-semibold text-sm leading-5 text-gray-400 text-xs"
               >
                 #0001
               </span>
@@ -238,13 +260,11 @@ exports[`TableView > matches snapshot 1`] = `
           <td
             class="px-4 py-3 text-gray-700"
           >
-            <a
-              class="text-sky-600 hover:text-red-600 hover:underline transition-colors capitalize"
-              data-discover="true"
-              href="/pokemon/1"
+            <span
+              class="font-semibold text-sm leading-5"
             >
-              mr mime
-            </a>
+              Mr mime
+            </span>
           </td>
           <td
             class="px-4 py-3 text-gray-700"

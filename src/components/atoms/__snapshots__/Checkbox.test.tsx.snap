@@ -7,7 +7,7 @@ exports[`Checkbox > matches snapshot 1`] = `
     for="fire"
   >
     <input
-      class="accent-gray-600"
+      class="accent-gray-600 cursor-pointer"
       id="fire"
       type="checkbox"
     />

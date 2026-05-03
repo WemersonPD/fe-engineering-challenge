@@ -29,10 +29,10 @@ function DefaultLayout({
         {topBar}
       </header>
 
-      <div className="flex flex-col lg:flex-row flex-1 min-h-0 px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col lg:flex-row flex-1 min-h-0">
         <aside
           aria-label="Filters"
-          className="w-full lg:w-64 shrink-0 py-6 lg:border-r border-gray-200 lg:overflow-y-auto"
+          className="w-full lg:w-64 shrink-0 py-6 px-4 lg:border-r border-gray-200 lg:overflow-y-auto"
         >
           {sidebar}
         </aside>

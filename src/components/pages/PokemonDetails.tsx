@@ -22,12 +22,27 @@ const STATS = [
   { key: 'speed', label: 'Speed' },
 ] as const
 
+const COLOR_GRADIENT: Record<string, string> = {
+  black: 'from-gray-200',
+  blue: 'from-blue-100',
+  brown: 'from-amber-100',
+  gray: 'from-gray-100',
+  green: 'from-green-100',
+  pink: 'from-pink-100',
+  purple: 'from-purple-100',
+  red: 'from-red-100',
+  white: 'from-gray-50',
+  yellow: 'from-yellow-100',
+}
+
 export default function PokemonDetails() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { pokemon, loading, error } = usePokemon(id)
   const pokedex = usePokedex()
   const caughtEntry = pokemon ? pokedex.caught.get(pokemon.id) : undefined
+  const gradientFrom =
+    COLOR_GRADIENT[pokemon?.color || 'gray'] ?? 'from-gray-50'
 
   if (loading)
     return (
@@ -54,7 +69,9 @@ export default function PokemonDetails() {
     )
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 lg:p-10">
+    <div
+      className={`min-h-screen bg-linear-to-b ${gradientFrom} to-white p-6 lg:p-10`}
+    >
       <Button
         variant="gray"
         onClick={() => navigate(-1)}

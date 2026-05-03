@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Table, { type Column } from '../../molecules/Table'
 import Badge from '../../atoms/Badge'
 import Button from '../../atoms/Button'
+import ActionButton from '../../atoms/ActionButton'
 import Checkbox from '../../atoms/Checkbox'
 import {
   formatPokemonId,
@@ -10,6 +11,8 @@ import {
   formatHeight,
   formatWeight,
 } from '../../../utils/pokemon'
+import { sharePokemon } from '../../../utils/share'
+import { ShareIcon } from '@heroicons/react/24/outline'
 import type { SortField } from '../../../types/filters'
 import type { Pokemon } from '../../../types/pokemon'
 import type { ViewProps } from './types'
@@ -110,29 +113,42 @@ export default function TableView({
         key: 'actions',
         header: 'Actions',
         render: (row) => {
-          if (caught.has(row.id)) {
-            return (
-              <Button
-                variant="red"
+          const formattedName = formatPokemonName(row.name)
+          return (
+            <div className="flex items-center gap-2">
+              {caught.has(row.id) ? (
+                <Button
+                  variant="red"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onRelease(row.id)
+                  }}
+                >
+                  Release
+                </Button>
+              ) : (
+                <Button
+                  variant="green"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onCatch(row)
+                  }}
+                >
+                  Catch
+                </Button>
+              )}
+
+              <ActionButton
+                aria-label={`Share ${formattedName}`}
                 onClick={(e) => {
                   e.stopPropagation()
-                  onRelease(row.id)
+                  sharePokemon(row.id, formattedName)
                 }}
+                className="w-8 h-8 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               >
-                Release
-              </Button>
-            )
-          }
-          return (
-            <Button
-              variant="green"
-              onClick={(e) => {
-                e.stopPropagation()
-                onCatch(row)
-              }}
-            >
-              Catch
-            </Button>
+                <ShareIcon className="w-4 h-4" />
+              </ActionButton>
+            </div>
           )
         },
       },

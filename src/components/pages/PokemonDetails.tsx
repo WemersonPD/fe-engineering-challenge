@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeftIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftIcon, ShareIcon } from '@heroicons/react/24/outline'
 import Badge from '../atoms/Badge'
 import Button from '../atoms/Button'
+import ActionButton from '../atoms/ActionButton'
 import Text from '../atoms/Text'
 import NoteForm from '../molecules/NoteForm'
 import { usePokemon } from '../../hooks/usePokemon'
@@ -10,8 +11,10 @@ import {
   formatPokemonId,
   formatHeight,
   formatWeight,
+  formatPokemonName,
 } from '../../utils/pokemon'
 import { toLocalDateString } from '../../utils/date'
+import { sharePokemon } from '../../utils/share'
 
 const STATS = [
   { key: 'hp', label: 'HP' },
@@ -43,6 +46,7 @@ export default function PokemonDetails() {
   const caughtEntry = pokemon ? pokedex.caught.get(pokemon.id) : undefined
   const gradientFrom =
     COLOR_GRADIENT[pokemon?.color || 'gray'] ?? 'from-gray-50'
+  const formattedName = formatPokemonName(pokemon?.name ?? '')
 
   if (loading)
     return (
@@ -104,27 +108,12 @@ export default function PokemonDetails() {
             </Text>
           </div>
 
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center mb-6">
             <div className="flex gap-2">
               {pokemon.types.map((type) => (
                 <Badge key={type} type={type} />
               ))}
             </div>
-
-            {pokedex.isCaught(pokemon.id) ? (
-              <Button variant="red" onClick={() => pokedex.release(pokemon.id)}>
-                Release
-              </Button>
-            ) : (
-              <Button
-                variant="green"
-                onClick={() =>
-                  pokedex.catch({ id: pokemon.id, name: pokemon.name })
-                }
-              >
-                Catch
-              </Button>
-            )}
           </div>
 
           {pokedex.isCaught(pokemon.id) && (
@@ -196,6 +185,29 @@ export default function PokemonDetails() {
               onSubmit={(note) => pokedex.updateNote(pokemon.id, note)}
             />
           )}
+        </div>
+
+        <div className="border-t border-gray-200 mx-3" />
+        <div className="px-3 py-3 flex items-center gap-2">
+          <Button
+            variant={pokedex.isCaught(pokemon.id) ? 'red' : 'green'}
+            onClick={() =>
+              pokedex.isCaught(pokemon.id)
+                ? pokedex.release(pokemon.id)
+                : pokedex.catch({ id: pokemon.id, name: pokemon.name })
+            }
+            className="flex-1"
+          >
+            {pokedex.isCaught(pokemon.id) ? 'Release' : 'Catch'}
+          </Button>
+
+          <ActionButton
+            aria-label={`Share ${formattedName}`}
+            onClick={() => sharePokemon(pokemon.id, formattedName)}
+            className="w-9 h-9 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+          >
+            <ShareIcon className="w-5 h-5" />
+          </ActionButton>
         </div>
       </div>
     </div>

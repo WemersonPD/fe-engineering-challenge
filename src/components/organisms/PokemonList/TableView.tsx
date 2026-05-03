@@ -1,11 +1,19 @@
+import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Table, { type Column } from '../../molecules/Table'
 import Badge from '../../atoms/Badge'
 import Button from '../../atoms/Button'
-import { formatPokemonId, formatHeight, formatWeight } from '../../../utils/pokemon'
-import Link from '../../atoms/Link'
+import Checkbox from '../../atoms/Checkbox'
+import {
+  formatPokemonId,
+  formatPokemonName,
+  formatHeight,
+  formatWeight,
+} from '../../../utils/pokemon'
 import type { SortField } from '../../../types/filters'
 import type { Pokemon } from '../../../types/pokemon'
 import type { ViewProps } from './types'
+import Text from '../../atoms/Text'
 
 export default function TableView({
   pokemon,
@@ -14,83 +22,122 @@ export default function TableView({
   onSortChange,
   onCatch,
   onRelease,
+  selectedIds,
+  onToggleSelect,
 }: ViewProps) {
-  const columns: Column<Pokemon>[] = [
-    {
-      key: 'id',
-      header: '#',
-      sortKey: 'id',
+  const navigate = useNavigate()
+  const isBulkMode = !!onToggleSelect
+
+  const columns = useMemo<Column<Pokemon>[]>(() => {
+    const selectColumn: Column<Pokemon> = {
+      key: 'select',
+      header: '',
       render: (row) => (
-        <div className="flex items-center gap-2">
-          <img
-            src={row.image}
-            alt={row.name}
-            className="w-8 h-8 object-contain"
-          />
-          <span className="text-gray-400 text-xs">
-            {formatPokemonId(row.id)}
-          </span>
-        </div>
+        <Checkbox
+          id={`select-table-pokemon-${row.id}`}
+          aria-label={`Select ${row.name} for bulk release`}
+          checked={selectedIds.has(row.id)}
+          onChange={() => onToggleSelect!(row.id)}
+          onClick={(e) => e.stopPropagation()}
+        />
       ),
-    },
-    {
-      key: 'name',
-      header: 'Name',
-      sortKey: 'name',
-      render: (row) => (
-        <Link to={`/pokemon/${row.id}`} className="capitalize">
-          {row.name.replace(/-/g, ' ')}
-        </Link>
-      ),
-    },
-    { key: 'height', header: 'Height', sortKey: 'height', render: (row) => formatHeight(row.height) },
-    { key: 'weight', header: 'Weight', render: (row) => formatWeight(row.weight) },
-    { key: 'hp', header: 'HP' },
-    { key: 'speed', header: 'Speed' },
-    { key: 'attack', header: 'Attack' },
-    { key: 'defense', header: 'Defense' },
-    { key: 'specialAttack', header: 'Sp. Atk' },
-    { key: 'specialDefense', header: 'Sp. Def' },
-    {
-      key: 'types',
-      header: 'Types',
-      sortKey: 'types',
-      render: (row) => (
-        <div className="flex flex-wrap gap-1">
-          {row.types.map((t) => (
-            <Badge key={t} type={t} />
-          ))}
-        </div>
-      ),
-    },
-    {
-      key: 'caughtAt',
-      header: 'Added to Pokédex',
-      sortKey: 'timestamp',
-      render: (row) => {
-        const entry = caught.get(row.id)
-        return entry ? new Date(entry.caughtAt).toLocaleDateString() : '—'
+    }
+
+    return [
+      ...(isBulkMode ? [selectColumn] : []),
+      {
+        key: 'id',
+        header: '#',
+        sortKey: 'id',
+        render: (row) => (
+          <div className="flex items-center gap-2">
+            <img
+              src={row.image}
+              alt={row.name}
+              className="w-8 h-8 object-contain"
+            />
+            <Text className="text-gray-400 text-xs">
+              {formatPokemonId(row.id)}
+            </Text>
+          </div>
+        ),
       },
-    },
-    {
-      key: 'actions',
-      header: 'Actions',
-      render: (row) => {
-        if (caught.has(row.id)) {
+      {
+        key: 'name',
+        header: 'Name',
+        sortKey: 'name',
+        render: (row) => <Text>{formatPokemonName(row.name)}</Text>,
+      },
+      {
+        key: 'height',
+        header: 'Height',
+        sortKey: 'height',
+        render: (row) => formatHeight(row.height),
+      },
+      {
+        key: 'weight',
+        header: 'Weight',
+        render: (row) => formatWeight(row.weight),
+      },
+      { key: 'hp', header: 'HP' },
+      { key: 'speed', header: 'Speed' },
+      { key: 'attack', header: 'Attack' },
+      { key: 'defense', header: 'Defense' },
+      { key: 'specialAttack', header: 'Sp. Atk' },
+      { key: 'specialDefense', header: 'Sp. Def' },
+      {
+        key: 'types',
+        header: 'Types',
+        sortKey: 'types',
+        render: (row) => (
+          <div className="flex flex-wrap gap-1">
+            {row.types.map((t) => (
+              <Badge key={t} type={t} />
+            ))}
+          </div>
+        ),
+      },
+      {
+        key: 'caughtAt',
+        header: 'Added to Pokédex',
+        sortKey: 'timestamp',
+        render: (row) => {
+          const entry = caught.get(row.id)
+          return entry ? new Date(entry.caughtAt).toLocaleDateString() : '—'
+        },
+      },
+      {
+        key: 'actions',
+        header: 'Actions',
+        render: (row) => {
+          if (caught.has(row.id)) {
+            return (
+              <Button
+                variant="red"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onRelease(row.id)
+                }}
+              >
+                Release
+              </Button>
+            )
+          }
           return (
-            <Button variant="red" onClick={() => onRelease(row.id)}>
-              Release
+            <Button
+              variant="green"
+              onClick={(e) => {
+                e.stopPropagation()
+                onCatch(row)
+              }}
+            >
+              Catch
             </Button>
           )
-        }
-        return (
-          <Button variant="green" onClick={() => onCatch(row)}>
-            Catch
-          </Button>
-        )
+        },
       },
-    },
-  ]
+    ]
+  }, [isBulkMode, caught, selectedIds, onToggleSelect, onCatch, onRelease])
 
   const handleSort = (sortKey: string) => {
     const field = sortKey as SortField
@@ -98,10 +145,26 @@ export default function TableView({
       onSortChange({ field, order: 'desc' })
       return
     }
+
     onSortChange({ field, order: 'asc' })
   }
 
+  const handleRowClick = (row: Pokemon) => {
+    if (isBulkMode) {
+      if (caught.has(row.id)) onToggleSelect(row.id)
+      return
+    }
+
+    navigate(`/pokemon/${row.id}`)
+  }
+
   return (
-    <Table columns={columns} data={pokemon} sort={sort} onSort={handleSort} />
+    <Table
+      columns={columns}
+      data={pokemon}
+      sort={sort}
+      onSort={handleSort}
+      onRowClick={handleRowClick}
+    />
   )
 }

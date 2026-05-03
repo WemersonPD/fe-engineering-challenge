@@ -65,7 +65,9 @@ export async function updateNote(id: number, note: string): Promise<void> {
   }
 }
 
-export async function catchManyPokemon(entries: CaughtPokemon[]): Promise<void> {
+export async function catchManyPokemon(
+  entries: CaughtPokemon[],
+): Promise<void> {
   const db = await getIndexedDB()
   const store = tx(db, CAUGHT_STORE, 'readwrite')
 
@@ -86,10 +88,4 @@ export async function getCaughtPokemon(
   return wrap<CaughtPokemon | undefined>(
     tx(db, CAUGHT_STORE, 'readonly').get(id),
   )
-}
-
-export async function getCaughtCount(): Promise<number> {
-  const db = await getIndexedDB()
-
-  return wrap<number>(tx(db, CAUGHT_STORE, 'readonly').count())
 }

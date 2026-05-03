@@ -1,3 +1,4 @@
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import { toStartOfDay, toEndOfDay, toLocalDateString } from './date'
 
 describe('toStartOfDay', () => {
@@ -13,20 +14,40 @@ describe('toEndOfDay', () => {
 })
 
 describe('toLocalDateString', () => {
-  it('formats a Date object as YYYY-MM-DD', () => {
-    expect(toLocalDateString(new Date(2024, 2, 15))).toBe('2024-03-15')
+  afterEach(() => {
+    vi.unstubAllGlobals()
   })
 
-  it('pads single-digit month and day with a leading zero', () => {
-    expect(toLocalDateString(new Date(2024, 0, 5))).toBe('2024-01-05')
+  const stubFormat = (returnValue: string) => {
+    const mockFormat = vi.fn().mockReturnValue(returnValue)
+    vi.stubGlobal('Intl', {
+      ...Intl,
+      DateTimeFormat: vi.fn(function () {
+        return { format: mockFormat }
+      }),
+    })
+    return mockFormat
+  }
+
+  it('accepts a string date', () => {
+    stubFormat('05/03/2026 09:04')
+
+    expect(toLocalDateString('2026-05-03T09:04:00.000Z')).toBe('05/03/2026 09:04')
   })
 
-  it('accepts an ISO string and returns the local date', () => {
-    const iso = new Date(2024, 5, 20).toISOString()
-    expect(toLocalDateString(iso)).toBe('2024-06-20')
+  it('accepts a Date object', () => {
+    stubFormat('05/03/2026 09:04')
+
+    expect(toLocalDateString(new Date('2026-05-03T09:04:00.000Z'))).toBe('05/03/2026 09:04')
   })
 
-  it('handles year boundaries correctly', () => {
-    expect(toLocalDateString(new Date(2024, 11, 31))).toBe('2024-12-31')
+  it('replaces ", " with " " in the formatted output', () => {
+    stubFormat('05/03/2026, 09:04')
+
+    expect(toLocalDateString('2026-05-03T09:04:00.000Z')).toBe('05/03/2026 09:04')
+  })
+
+  it('does not contain ", " in the output', () => {
+    expect(toLocalDateString('2026-05-03T09:04:00.000Z')).not.toContain(', ')
   })
 })

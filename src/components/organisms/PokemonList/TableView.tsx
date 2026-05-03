@@ -17,6 +17,7 @@ import type { SortField } from '../../../types/filters'
 import type { Pokemon } from '../../../types/pokemon'
 import type { ViewProps } from './types'
 import Text from '../../atoms/Text'
+import { toLocalDateString } from '../../../utils/date'
 
 export default function TableView({
   pokemon,
@@ -106,7 +107,7 @@ export default function TableView({
         sortKey: 'timestamp',
         render: (row) => {
           const entry = caught.get(row.id)
-          return entry ? new Date(entry.caughtAt).toLocaleDateString() : '—'
+          return entry ? toLocalDateString(entry.caughtAt) : '—'
         },
       },
       {

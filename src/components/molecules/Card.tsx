@@ -1,5 +1,6 @@
 import type { CaughtPokemon, Pokemon } from '../../types/pokemon'
 import Button from '../atoms/Button'
+import ActionButton from '../atoms/ActionButton'
 import Text from '../atoms/Text'
 import Badge from '../atoms/Badge'
 import Checkbox from '../atoms/Checkbox'
@@ -9,6 +10,8 @@ import {
   formatPokemonName,
   formatWeight,
 } from '../../utils/pokemon'
+import { sharePokemon } from '../../utils/share'
+import { ShareIcon } from '@heroicons/react/24/outline'
 import type { MouseEvent } from 'react'
 
 const COLOR_GRADIENT: Record<string, string> = {
@@ -189,15 +192,27 @@ export default function Card({
       <div className="border-t border-gray-200 mx-3" />
 
       {/* Catch / Release */}
-      <div className="px-3 py-3">
+      <div className="px-3 py-3 flex items-center gap-2">
         <Button
           variant={isCaught ? 'red' : 'green'}
           onClick={onActionCardClicked}
           aria-pressed={isCaught}
-          className="w-full"
+          className="flex-1"
         >
           {isCaught ? 'Release' : 'Catch'}
         </Button>
+
+        <ActionButton
+          aria-label={`Share ${formattedName}`}
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            sharePokemon(pokemon.id, formattedName)
+          }}
+          className="w-9 h-9 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+        >
+          <ShareIcon className="w-5 h-5" />
+        </ActionButton>
       </div>
     </article>
   )

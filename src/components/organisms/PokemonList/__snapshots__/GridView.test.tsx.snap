@@ -126,7 +126,7 @@ exports[`GridView > matches snapshot 1`] = `
               </div>
             </div>
             <div
-              class="relative flex justify-center bg-gray-50 mx-3 border border-gray-200 rounded-sm items-center aspect-4/3"
+              class="relative flex justify-center bg-gray-50 mx-3 border border-gray-200 rounded-sm items-center py-4"
             >
               <img
                 alt="Charmander"
@@ -349,7 +349,7 @@ exports[`GridView > matches snapshot 1`] = `
               </div>
             </div>
             <div
-              class="relative flex justify-center bg-gray-50 mx-3 border border-gray-200 rounded-sm items-center aspect-4/3"
+              class="relative flex justify-center bg-gray-50 mx-3 border border-gray-200 rounded-sm items-center py-4"
             >
               <img
                 alt="Charmeleon"

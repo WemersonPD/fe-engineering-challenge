@@ -59,11 +59,12 @@ export default function GridView({
         aria-label="Pokémon list"
       >
         {pokemon.map((p) => (
-          <li id={`pokemon-${p.id}`} key={p.id}>
+          <li id={`pokemon-${p.id}`} key={p.id} className="w-full sm:w-auto">
             <Link
               to={`/pokemon/${p.id}`}
               id={`pokemon-link-${p.id}`}
               key={`pokemon-link-${p.id}`}
+              className="block w-full sm:w-auto"
             >
               <Card
                 key={`pokemon-link-${p.id}`}

@@ -75,7 +75,7 @@ export default function Card({
   return (
     <article
       aria-label={`${formattedName}, ${pokemon.hp} HP, ${isCaught ? 'caught' : 'not caught'}`}
-      className={`w-64 flex flex-col rounded-2xl bg-linear-to-b ${gradientFrom} to-white border-2 border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow`}
+      className={`w-full sm:w-64 flex flex-col rounded-2xl bg-linear-to-b ${gradientFrom} to-white border-2 border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow`}
     >
       {/* Header */}
       <div className="px-4 pt-4 pb-2">
@@ -188,7 +188,6 @@ export default function Card({
           {pokemon.attack}
         </Text>
       </div>
-      <div className="border-t border-gray-200 mx-3" />
 
       {/* Catch / Release */}
       <div className="px-3 py-3 flex items-center gap-2">

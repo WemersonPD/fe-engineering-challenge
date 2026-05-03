@@ -3,13 +3,14 @@ import {
   Bars3Icon,
   Squares2X2Icon,
   TrashIcon,
+  FunnelIcon,
 } from '@heroicons/react/24/outline'
 import Button from '../atoms/Button'
 import FilterPanel, { type Filters } from '../organisms/FilterPanel'
 import PokemonList from '../organisms/PokemonList'
 import Pagination from '../molecules/Pagination'
 import ViewToggle from '../atoms/ViewToggle'
-import HomeLayout from '../templates/HomoLayout'
+import HomeLayout from '../templates/HomeLayout'
 import { useAllPokemon } from '../../hooks/useAllPokemon'
 import { useDebounce } from '../../hooks/useDebounce'
 import { usePokedex } from '../../hooks/usePokedex'
@@ -57,6 +58,7 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS)
   const [sort, setSort] = useState<Sort>(DEFAULT_SORT)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const pokedex = usePokedex()
   const bulk = useBulkSelect({ releaseMany: pokedex.releaseMany })
   const debouncedFilters = useDebounce(filters)
@@ -130,6 +132,24 @@ export default function Home() {
 
   const content = (
     <>
+      <div className="lg:hidden flex items-center justify-between mb-4 shrink-0">
+        <Button
+          variant="gray"
+          onClick={() => setSidebarOpen(true)}
+          className="flex items-center gap-2"
+        >
+          <FunnelIcon className="w-4 h-4" />
+          Filters
+        </Button>
+        <Button
+          variant="gray"
+          onClick={() => setFilters(DEFAULT_FILTERS)}
+          className="text-xs py-1 px-2"
+        >
+          Clear all
+        </Button>
+      </div>
+
       <div className="flex items-center justify-between mb-4 shrink-0">
         <ViewToggle
           value={viewMode}
@@ -176,7 +196,12 @@ export default function Home() {
   return (
     <>
       <HomeLayout
-        topBar={<TopBar onExport={pokedex.exportPokedex} onImport={pokedex.importPokedex} />}
+        topBar={
+          <TopBar
+            onExport={pokedex.exportPokedex}
+            onImport={pokedex.importPokedex}
+          />
+        }
         sidebar={
           <FilterPanel
             filters={filters}
@@ -184,6 +209,8 @@ export default function Home() {
             onClear={() => setFilters(DEFAULT_FILTERS)}
           />
         }
+        isSidebarOpen={sidebarOpen}
+        onCloseSidebar={() => setSidebarOpen(false)}
         content={content}
         pagination={
           <Pagination

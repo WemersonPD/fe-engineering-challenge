@@ -40,7 +40,7 @@ export default function PokemonImage({
         className={
           isLarge
             ? 'w-48 h-48 object-contain'
-            : 'w-4/5 h-4/5 object-contain mix-blend-multiply'
+            : 'w-4/5 h-4/5 max-w-32 max-h-32 object-contain mix-blend-multiply'
         }
       />
     </div>

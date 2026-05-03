@@ -55,7 +55,7 @@ export default function GridView({
       </div>
 
       <ul
-        className="flex flex-wrap gap-4 justify-between"
+        className="flex flex-wrap gap-4 justify-center"
         aria-label="Pokémon list"
       >
         {pokemon.map((p) => (

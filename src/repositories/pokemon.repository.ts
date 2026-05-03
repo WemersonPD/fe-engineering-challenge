@@ -65,6 +65,13 @@ export async function updateNote(id: number, note: string): Promise<void> {
   }
 }
 
+export async function catchManyPokemon(entries: CaughtPokemon[]): Promise<void> {
+  const db = await getIndexedDB()
+  const store = tx(db, CAUGHT_STORE, 'readwrite')
+
+  await Promise.all(entries.map((entry) => wrap(store.put(entry))))
+}
+
 export async function getAllCaught(): Promise<CaughtPokemon[]> {
   const db = await getIndexedDB()
 

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { exportCSV } from './file'
+import { exportCSV, importCSV } from './file'
 
 const mockClick = vi.fn()
 const mockAppendChild = vi.fn()
@@ -111,5 +111,54 @@ describe('exportCSV', () => {
 
     exportCSV(data, 'pokedex')
     expect(mockAnchor.download).toMatch(/^pokedex_/)
+  })
+})
+
+function makeFile(content: string): File {
+  return new File([content], 'pokedex.csv', { type: 'text/csv' })
+}
+
+describe('importCSV', () => {
+  it('returns failure when file has only a header row', async () => {
+    const file = makeFile('ID,Name,CaughtAt,Notes')
+
+    const result = await importCSV(file)
+
+    expect(result).toEqual({ success: false, error: 'No data rows found' })
+  })
+
+  it('returns success with parsed data', async () => {
+    const file = makeFile('ID,Name,CaughtAt,Notes\n1,Bulbasaur,2026-05-03T00:00:00.000Z,my note')
+
+    const result = await importCSV(file)
+
+    expect(result.success).toBe(true)
+    expect(result.data).toHaveLength(1)
+    expect(result.data![0]).toEqual({
+      ID: '1',
+      Name: 'Bulbasaur',
+      CaughtAt: '2026-05-03T00:00:00.000Z',
+      Notes: 'my note',
+    })
+  })
+
+  it('parses multiple rows', async () => {
+    const file = makeFile(
+      'ID,Name,CaughtAt,Notes\n1,Bulbasaur,2026-05-03T00:00:00.000Z,\n2,Ivysaur,2026-05-04T00:00:00.000Z,note',
+    )
+
+    const result = await importCSV(file)
+
+    expect(result.success).toBe(true)
+    expect(result.data).toHaveLength(2)
+  })
+
+  it('fills missing values with empty string', async () => {
+    const file = makeFile('ID,Name,CaughtAt,Notes\n1,Bulbasaur,2026-05-03T00:00:00.000Z')
+
+    const result = await importCSV(file)
+
+    expect(result.success).toBe(true)
+    expect(result.data![0]['Notes']).toBe('')
   })
 })

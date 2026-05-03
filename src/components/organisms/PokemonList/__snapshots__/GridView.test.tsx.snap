@@ -66,7 +66,7 @@ exports[`GridView > matches snapshot 1`] = `
     </div>
     <ul
       aria-label="Pokémon list"
-      class="flex flex-wrap gap-4"
+      class="flex flex-wrap gap-4 justify-between"
     >
       <li
         id="pokemon-1"
@@ -257,14 +257,36 @@ exports[`GridView > matches snapshot 1`] = `
               class="border-t border-gray-200 mx-3"
             />
             <div
-              class="px-3 py-3"
+              class="px-3 py-3 flex items-center gap-2"
             >
               <button
                 aria-pressed="false"
-                class="py-1.5 px-4 rounded-xl text-sm font-medium transition-colors cursor-pointer bg-green-100 text-green-700 hover:bg-green-200 disabled:opacity-40 disabled:cursor-not-allowed w-full"
+                class="py-1.5 px-4 rounded-xl text-sm font-medium transition-colors cursor-pointer bg-green-100 text-green-700 hover:bg-green-200 disabled:opacity-40 disabled:cursor-not-allowed flex-1"
                 type="button"
               >
                 Catch
+              </button>
+              <button
+                aria-label="Share Charmander"
+                class="flex items-center justify-center rounded-full aspect-square cursor-pointer transition-colors w-9 h-9 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                  data-slot="icon"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </button>
             </div>
           </article>
@@ -459,14 +481,36 @@ exports[`GridView > matches snapshot 1`] = `
               class="border-t border-gray-200 mx-3"
             />
             <div
-              class="px-3 py-3"
+              class="px-3 py-3 flex items-center gap-2"
             >
               <button
                 aria-pressed="false"
-                class="py-1.5 px-4 rounded-xl text-sm font-medium transition-colors cursor-pointer bg-green-100 text-green-700 hover:bg-green-200 disabled:opacity-40 disabled:cursor-not-allowed w-full"
+                class="py-1.5 px-4 rounded-xl text-sm font-medium transition-colors cursor-pointer bg-green-100 text-green-700 hover:bg-green-200 disabled:opacity-40 disabled:cursor-not-allowed flex-1"
                 type="button"
               >
                 Catch
+              </button>
+              <button
+                aria-label="Share Charmeleon"
+                class="flex items-center justify-center rounded-full aspect-square cursor-pointer transition-colors w-9 h-9 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                  data-slot="icon"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </button>
             </div>
           </article>

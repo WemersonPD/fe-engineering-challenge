@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ActionButton > matches snapshot 1`] = `
+<div>
+  <button
+    aria-label="Share"
+    class="flex items-center justify-center rounded-full aspect-square cursor-pointer transition-colors"
+    type="button"
+  />
+</div>
+`;

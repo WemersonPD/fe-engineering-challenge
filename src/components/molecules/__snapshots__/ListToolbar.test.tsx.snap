@@ -1,0 +1,39 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ListToolbar > matches snapshot 1`] = `
+<div>
+  <div
+    class="sm:hidden mb-4 shrink-0 flex gap-2"
+  >
+    <button>
+      Trigger
+    </button>
+    <div
+      class="relative"
+    >
+      <button
+        aria-label="More options"
+        class="py-1.5 px-4 rounded-xl text-sm font-medium transition-colors cursor-pointer bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed p-0 flex items-center justify-center"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5"
+          data-slot="icon"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+`;

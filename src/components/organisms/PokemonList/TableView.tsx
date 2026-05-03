@@ -59,6 +59,7 @@ export default function TableView({
               src={row.image}
               alt={row.name}
               className="w-8 h-8 object-contain"
+              loading="lazy"
             />
             <Text className="text-gray-400 text-xs">
               {formatPokemonId(row.id)}
@@ -103,7 +104,7 @@ export default function TableView({
       },
       {
         key: 'caughtAt',
-        header: 'Added to Pokédex',
+        header: 'Caught At',
         sortKey: 'timestamp',
         render: (row) => {
           const entry = caught.get(row.id)

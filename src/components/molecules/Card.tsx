@@ -4,6 +4,7 @@ import ActionButton from '../atoms/ActionButton'
 import Text from '../atoms/Text'
 import Badge from '../atoms/Badge'
 import Checkbox from '../atoms/Checkbox'
+import PokemonImage from '../atoms/PokemonImage'
 import {
   formatHeight,
   formatPokemonId,
@@ -117,14 +118,12 @@ export default function Card({
       </div>
 
       {/* Image */}
-      <div className="mx-3 border border-gray-200 rounded-sm bg-gray-50 flex items-center justify-center aspect-4/3">
-        <img
-          src={pokemon.image}
-          alt={formattedName}
-          loading="lazy"
-          className="w-4/5 h-4/5 object-contain mix-blend-multiply"
-        />
-      </div>
+      <PokemonImage
+        src={pokemon.image}
+        alt={formattedName}
+        isCaught={isCaught}
+        size="sm"
+      />
 
       {/* Height / Weight banner */}
       <div className="mx-3 mt-3 bg-amber-400 py-1.5 px-3 text-center rounded-sm">

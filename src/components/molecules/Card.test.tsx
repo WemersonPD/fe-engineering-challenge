@@ -109,6 +109,29 @@ describe('Card component', () => {
     })
   })
 
+  describe('Card caught indicator', () => {
+    it('does not show the caught indicator when the pokemon is not caught', () => {
+      render(
+        <Card pokemon={mockPokemon} onCatch={vi.fn()} onRelease={vi.fn()} />,
+      )
+
+      expect(screen.queryByAltText('Caught')).not.toBeInTheDocument()
+    })
+
+    it('shows the caught indicator when the pokemon is caught', () => {
+      render(
+        <Card
+          pokemon={mockPokemon}
+          caught={mockCaught}
+          onCatch={vi.fn()}
+          onRelease={vi.fn()}
+        />,
+      )
+
+      expect(screen.getByAltText('Caught')).toBeInTheDocument()
+    })
+  })
+
   describe('Card checkbox', () => {
     it('does not render a checkbox when the pokemon is not caught', () => {
       render(

@@ -3,7 +3,7 @@
 exports[`ListToolbar > matches snapshot 1`] = `
 <div>
   <div
-    class="sm:hidden mb-4 shrink-0 flex gap-2"
+    class="lg:hidden mb-4 shrink-0 flex gap-2"
   >
     <button>
       Trigger

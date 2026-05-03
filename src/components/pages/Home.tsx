@@ -176,7 +176,7 @@ export default function Home() {
   return (
     <>
       <HomeLayout
-        topBar={<TopBar />}
+        topBar={<TopBar onExport={pokedex.exportPokedex} />}
         sidebar={
           <FilterPanel
             filters={filters}

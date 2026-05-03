@@ -7,6 +7,7 @@ import {
   updateNote as dbUpdateNote,
   getAllCaught,
 } from '../repositories/pokemon.repository'
+import { exportCSV } from '../utils/file'
 
 interface UsePokedexReturn {
   caught: Map<number, CaughtPokemon>
@@ -16,6 +17,7 @@ interface UsePokedexReturn {
   release: (id: number) => Promise<void>
   releaseMany: (ids: number[]) => Promise<void>
   updateNote: (id: number, note: string) => Promise<void>
+  exportPokedex: () => void
 }
 
 export function usePokedex(): UsePokedexReturn {
@@ -69,6 +71,17 @@ export function usePokedex(): UsePokedexReturn {
 
   const isCaught = useCallback((id: number) => caught.has(id), [caught])
 
+  const exportPokedex = useCallback(() => {
+    const data = Array.from(caught.values()).map(({ id, name, caughtAt, note }) => ({
+      ID: id,
+      Name: name,
+      CaughtAt: caughtAt,
+      Notes: note,
+    }))
+
+    return exportCSV(data, 'pokedex')
+  }, [caught])
+
   return {
     caught,
     caughtCount: caught.size,
@@ -77,5 +90,6 @@ export function usePokedex(): UsePokedexReturn {
     release,
     releaseMany,
     updateNote,
+    exportPokedex,
   }
 }

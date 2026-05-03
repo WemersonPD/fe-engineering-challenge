@@ -6,6 +6,7 @@ import type { CaughtPokemon, Pokemon } from '../../../types/pokemon'
 import type { Sort } from '../../../types/filters'
 import type { ViewProps } from './types'
 import * as shareUtils from '../../../utils/share'
+import { toLocalDateString } from '../../../utils/date'
 
 const pokemon: Pokemon = {
   id: 1,
@@ -81,7 +82,7 @@ describe('TableView', () => {
       </MemoryRouter>,
     )
     expect(
-      screen.getByText(new Date(caughtEntry.caughtAt).toLocaleDateString()),
+      screen.getByText(toLocalDateString(caughtEntry.caughtAt)),
     ).toBeInTheDocument()
   })
 

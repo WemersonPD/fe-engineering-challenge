@@ -20,7 +20,7 @@ export default function PokemonImage({
       className={`relative flex justify-center bg-gray-50 ${
         isLarge
           ? 'py-8'
-          : 'mx-3 border border-gray-200 rounded-sm items-center aspect-4/3'
+          : 'mx-3 border border-gray-200 rounded-sm items-center py-4'
       }`}
     >
       {isCaught && (

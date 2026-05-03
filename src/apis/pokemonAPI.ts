@@ -25,8 +25,8 @@ export async function fetchPokemon(
       pokemon.sprites.other?.['official-artwork']?.front_default ??
       pokemon.sprites.front_default ??
       '',
-    height: pokemon.height / 10,
-    weight: pokemon.weight / 10,
+    height: pokemon.height / 10, // Convert decimeters to meters
+    weight: pokemon.weight / 10, // Convert hectograms to kilograms
     hp: stat(pokemon.stats, 'hp'),
     attack: stat(pokemon.stats, 'attack'),
     defense: stat(pokemon.stats, 'defense'),

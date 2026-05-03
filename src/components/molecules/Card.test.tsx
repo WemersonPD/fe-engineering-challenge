@@ -1,11 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import Card from './Card'
 import type { Pokemon, CaughtPokemon } from '../../types/pokemon'
-
-vi.mock('../../utils/share', () => ({
-  sharePokemon: vi.fn().mockResolvedValue({ success: true, message: '' }),
-}))
+import * as shareUtils from '../../utils/share'
 
 const mockPokemon: Pokemon = {
   id: 1,
@@ -34,7 +31,10 @@ describe('Card component', () => {
   it('renders the pokemon basic data', () => {
     render(<Card pokemon={mockPokemon} onCatch={vi.fn()} onRelease={vi.fn()} />)
 
-    expect(screen.getByRole('img', { name: 'Bulbasaur' })).toHaveAttribute('src', 'bulbasaur.png')
+    expect(screen.getByRole('img', { name: 'Bulbasaur' })).toHaveAttribute(
+      'src',
+      'bulbasaur.png',
+    )
     expect(screen.getByText('Bulbasaur')).toBeInTheDocument()
     expect(screen.getByText('#0001')).toBeInTheDocument()
     expect(screen.getByText('45 HP')).toBeInTheDocument()
@@ -79,20 +79,33 @@ describe('Card component', () => {
   })
 
   describe('Card share button', () => {
-    it('renders the share button', () => {
-      render(<Card pokemon={mockPokemon} onCatch={vi.fn()} onRelease={vi.fn()} />)
+    afterEach(() => vi.restoreAllMocks())
 
-      expect(screen.getByRole('button', { name: 'Share Bulbasaur' })).toBeInTheDocument()
+    it('renders the share button', () => {
+      render(
+        <Card pokemon={mockPokemon} onCatch={vi.fn()} onRelease={vi.fn()} />,
+      )
+
+      expect(
+        screen.getByRole('button', { name: 'Share Bulbasaur' }),
+      ).toBeInTheDocument()
     })
 
-    it('calls sharePokemon with the pokemon id and name when share is clicked', async () => {
-      const { sharePokemon } = await import('../../utils/share')
+    it('calls sharePokemon with the pokemon id and name when share is clicked', () => {
+      const spy = vi
+        .spyOn(shareUtils, 'sharePokemon')
+        .mockResolvedValueOnce({ success: true, message: '' })
 
-      render(<Card pokemon={mockPokemon} onCatch={vi.fn()} onRelease={vi.fn()} />)
+      render(
+        <Card pokemon={mockPokemon} onCatch={vi.fn()} onRelease={vi.fn()} />,
+      )
 
       fireEvent.click(screen.getByRole('button', { name: 'Share Bulbasaur' }))
 
-      expect(sharePokemon).toHaveBeenCalledWith(mockPokemon.id, 'Bulbasaur')
+      expect(spy).toHaveBeenCalledWith(mockPokemon.id, 'Bulbasaur')
+      expect(spy).toHaveBeenCalledOnce()
+
+      spy.mockRestore()
     })
   })
 

@@ -1,10 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import TableView from './TableView'
 import type { CaughtPokemon, Pokemon } from '../../../types/pokemon'
 import type { Sort } from '../../../types/filters'
 import type { ViewProps } from './types'
+import * as shareUtils from '../../../utils/share'
 
 const pokemon: Pokemon = {
   id: 1,
@@ -82,6 +83,31 @@ describe('TableView', () => {
     expect(
       screen.getByText(new Date(caughtEntry.caughtAt).toLocaleDateString()),
     ).toBeInTheDocument()
+  })
+
+  describe('share button', () => {
+    afterEach(() => vi.restoreAllMocks())
+
+    it('renders the share button', () => {
+      renderWithRouter(<TableView {...defaultProps} />)
+      expect(
+        screen.getByRole('button', { name: 'Share Mr mime' }),
+      ).toBeInTheDocument()
+    })
+
+    it('calls sharePokemon with the pokemon id and name when clicked', () => {
+      const spy = vi
+        .spyOn(shareUtils, 'sharePokemon')
+        .mockResolvedValueOnce({ success: true, message: '' })
+
+      renderWithRouter(<TableView {...defaultProps} />)
+      fireEvent.click(screen.getByRole('button', { name: 'Share Mr mime' }))
+
+      expect(spy).toHaveBeenCalledWith(pokemon.id, 'Mr mime')
+      expect(spy).toHaveBeenCalledOnce()
+
+      spy.mockRestore()
+    })
   })
 
   describe('bulk select checkbox', () => {

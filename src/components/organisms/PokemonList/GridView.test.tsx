@@ -55,6 +55,26 @@ describe('GridView', () => {
     expect(onSortChange).toHaveBeenCalledWith({ field: 'id', order: 'desc' })
   })
 
+  it('shows Sort descending aria-label and BarsArrowDownIcon when order is desc', () => {
+    renderWithRouter(
+      <GridView {...defaultProps} sort={{ field: 'id', order: 'desc' }} />,
+    )
+    expect(screen.getByRole('button', { name: /sort descending/i })).toBeInTheDocument()
+  })
+
+  it('toggles sort order from desc to asc when the order button is clicked', () => {
+    const onSortChange = vi.fn()
+    renderWithRouter(
+      <GridView
+        {...defaultProps}
+        sort={{ field: 'id', order: 'desc' }}
+        onSortChange={onSortChange}
+      />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /sort descending/i }))
+    expect(onSortChange).toHaveBeenCalledWith({ field: 'id', order: 'asc' })
+  })
+
   it('updates sort field when dropdown changes', () => {
     const onSortChange = vi.fn()
     renderWithRouter(<GridView {...defaultProps} onSortChange={onSortChange} />)

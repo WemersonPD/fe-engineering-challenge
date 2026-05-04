@@ -1,6 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, useNavigate } from 'react-router-dom'
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
+
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('react-router-dom')>()
+  return { ...actual, useNavigate: vi.fn().mockReturnValue(vi.fn()) }
+})
 import TableView from './TableView'
 import type { CaughtPokemon, Pokemon } from '../../../types/pokemon'
 import type { Sort } from '../../../types/filters'
@@ -159,6 +164,48 @@ describe('TableView', () => {
       )
       fireEvent.click(screen.getByRole('columnheader', { name: /weight/i }))
       expect(onSortChange).not.toHaveBeenCalled()
+    })
+
+    it('toggles to desc when the active sorted field is clicked while order is asc', () => {
+      const onSortChange = vi.fn()
+      renderWithRouter(
+        <TableView
+          {...defaultProps}
+          sort={{ field: 'name', order: 'asc' }}
+          onSortChange={onSortChange}
+        />,
+      )
+      fireEvent.click(screen.getByRole('columnheader', { name: /name/i }))
+      expect(onSortChange).toHaveBeenCalledWith({ field: 'name', order: 'desc' })
+    })
+  })
+
+  describe('handleRowClick', () => {
+    it('navigates to the pokemon detail page when not in bulk mode', () => {
+      const navigate = vi.fn()
+      vi.mocked(useNavigate).mockReturnValueOnce(navigate)
+      renderWithRouter(<TableView {...defaultProps} onToggleSelect={undefined} />)
+      fireEvent.click(screen.getAllByRole('row')[1])
+      expect(navigate).toHaveBeenCalledWith('/pokemon/1')
+    })
+
+    it('calls onToggleSelect when clicking a caught pokemon row in bulk mode', () => {
+      const onToggleSelect = vi.fn()
+      const caught = new Map([[1, caughtEntry]])
+      renderWithRouter(
+        <TableView {...defaultProps} caught={caught} onToggleSelect={onToggleSelect} />,
+      )
+      fireEvent.click(screen.getAllByRole('row')[1])
+      expect(onToggleSelect).toHaveBeenCalledWith(1)
+    })
+
+    it('does not call onToggleSelect when clicking an uncaught pokemon row in bulk mode', () => {
+      const onToggleSelect = vi.fn()
+      renderWithRouter(
+        <TableView {...defaultProps} onToggleSelect={onToggleSelect} />,
+      )
+      fireEvent.click(screen.getAllByRole('row')[1])
+      expect(onToggleSelect).not.toHaveBeenCalled()
     })
   })
 })

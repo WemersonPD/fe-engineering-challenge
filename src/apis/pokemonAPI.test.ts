@@ -84,6 +84,21 @@ describe('pokemonAPI', () => {
       })
     })
 
+    it('falls back to empty string when all sprite sources are missing', async () => {
+      mockGetPokemonByName.mockResolvedValueOnce(
+        makePokemonResponse({
+          sprites: {
+            front_default: null,
+            other: {},
+          } as unknown as Pokedex.Pokemon['sprites'],
+        }),
+      )
+      mockGetPokemonSpeciesByName.mockResolvedValueOnce(makeSpeciesResponse())
+
+      const result = await fetchPokemon('bulbasaur')
+      expect(result.image).toBe('')
+    })
+
     it('falls back to front_default sprite when official artwork is missing', async () => {
       const pokemon = makePokemonResponse({
         sprites: {

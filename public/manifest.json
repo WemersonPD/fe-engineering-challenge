@@ -1,0 +1,17 @@
+{
+  "name": "Pokédex",
+  "short_name": "Pokédex",
+  "description": "Browse and explore Generation 1 Pokémon",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FF1C1C",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

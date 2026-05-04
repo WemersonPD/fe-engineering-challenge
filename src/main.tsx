@@ -19,12 +19,14 @@ if ('serviceWorker' in navigator) {
       .then((registration) => {
         const sw =
           registration.installing ?? registration.waiting ?? registration.active
+
         if (sw) {
           sw.addEventListener('statechange', (e) => {
             if ((e.target as ServiceWorker).state === 'activated') {
               registration.active?.postMessage('PRECACHE_GEN1')
             }
           })
+
           // Already activated on subsequent page loads
           if (registration.active) {
             registration.active.postMessage('PRECACHE_GEN1')
